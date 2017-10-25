@@ -115,8 +115,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewScrol
     // 下拉刷新-一般为加载网络数据
     @Override
     public void onRefresh() {
-        isAbleLoading = true;
         // 获取最新数据
+        isAbleLoading = true;
         // 模拟网络加载
         new Handler().postDelayed(new Runnable() {
             @Override
