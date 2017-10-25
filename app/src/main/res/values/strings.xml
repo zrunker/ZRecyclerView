@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ZRecyclerView</string>
+
+    <string name="load_more_before">加载更多</string>
+    <string name="load_more">正在加载&#8230;</string>
+    <string name="load_more_complete">已经到达底部了</string>
+</resources>
