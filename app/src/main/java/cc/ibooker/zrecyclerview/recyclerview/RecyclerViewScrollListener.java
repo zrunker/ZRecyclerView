@@ -52,10 +52,10 @@ public class RecyclerViewScrollListener extends RecyclerView.OnScrollListener {
         // 获取RecyclerView布局管理器
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
         if (layoutManagerType == null) {
-            if (layoutManager instanceof LinearLayoutManager) {
-                layoutManagerType = LAYOUT_MANAGER_TYPE.LINEAR;
-            } else if (layoutManager instanceof GridLayoutManager) {
+            if (layoutManager instanceof GridLayoutManager) {
                 layoutManagerType = LAYOUT_MANAGER_TYPE.GRID;
+            } else if (layoutManager instanceof LinearLayoutManager) {
+                layoutManagerType = LAYOUT_MANAGER_TYPE.LINEAR;
             } else if (layoutManager instanceof StaggeredGridLayoutManager) {
                 layoutManagerType = LAYOUT_MANAGER_TYPE.STAGGERED_GRID;
             } else {

@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewScrol
 
     // 初始化控件
     private void initView() {
-        swipeLayout = (AutoSwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeLayout = findViewById(R.id.swipe_container);
         swipeLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewScrol
         swipeLayout.setOnRefreshListener(this);
 
         // 设置recyclerView的布局管理器
-        recyclerView = (LoadRecyclerView) findViewById(R.id.recyclerview);
+        recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new MyLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setOnLoadListener(this);
 
