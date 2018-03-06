@@ -4,6 +4,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.View;
 
 /**
  * RecyclerView加载更多滚动事件
@@ -87,6 +88,15 @@ public class RecyclerViewScrollListener extends RecyclerView.OnScrollListener {
             onScrollDistanceListener.onScrollDistance(totalDy);
         }
 
+        /**
+         * 设置指定位置到顶部距离事件
+         */
+        if (targetPosition >= 0 && targetPosition < layoutManager.getChildCount() && onPositionTopDistanceListener != null) {
+            View view = layoutManager.findViewByPosition(targetPosition);
+            if (view != null) {
+                onPositionTopDistanceListener.onPositionTopDistance(view.getTop());
+            }
+        }
     }
 
     // 滚动状态改变
@@ -147,7 +157,7 @@ public class RecyclerViewScrollListener extends RecyclerView.OnScrollListener {
         this.onLoadListener = onLoadListener;
     }
 
-    // 滚动距离接口
+    // 滚动距离监听接口
     public interface OnScrollDistanceListener {
         void onScrollDistance(int dy);
     }
@@ -167,5 +177,18 @@ public class RecyclerViewScrollListener extends RecyclerView.OnScrollListener {
 
     public void setOnScrollStateChangedListener(OnScrollStateChangedListener onScrollStateChangedListener) {
         this.onScrollStateChangedListener = onScrollStateChangedListener;
+    }
+
+    // 指定位置position到顶部距离接口
+    public interface OnPositionTopDistanceListener {
+        void onPositionTopDistance(int dy);
+    }
+
+    private OnPositionTopDistanceListener onPositionTopDistanceListener;
+    private int targetPosition;
+
+    public void setOnPositionTopDistanceListener(OnPositionTopDistanceListener onPositionTopDistanceListener, int position) {
+        this.onPositionTopDistanceListener = onPositionTopDistanceListener;
+        this.targetPosition = position;
     }
 }
