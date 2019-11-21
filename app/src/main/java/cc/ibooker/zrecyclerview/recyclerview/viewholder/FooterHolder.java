@@ -43,9 +43,8 @@ public class FooterHolder extends RecyclerView.ViewHolder {
                     @Override
                     public void onClick(View v) {
                         // 防止连续点击
-                        if (ClickUtil.isFastClick()) {
+                        if (ClickUtil.isFastClick())
                             return;
-                        }
                         Toast.makeText(context, "发送通讯", Toast.LENGTH_SHORT).show();
                     }
                 });

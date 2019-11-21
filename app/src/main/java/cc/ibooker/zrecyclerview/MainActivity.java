@@ -1,5 +1,6 @@
 package cc.ibooker.zrecyclerview;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,6 +14,7 @@ import cc.ibooker.zrecyclerview.bean.FooterData;
 import cc.ibooker.zrecyclerview.bean.RvData;
 import cc.ibooker.zrecyclerview.recyclerview.MyLinearLayoutManager;
 import cc.ibooker.zrecyclerview.recyclerview.RecyclerViewScrollListener;
+import cc.ibooker.zrecyclerview.test.footer.FourActivity;
 import cc.ibooker.zrecyclerview.utils.ConstantUtil;
 import cc.ibooker.zrecyclerview.view.AutoSwipeRefreshLayout;
 import cc.ibooker.zrecyclerview.view.LoadRecyclerView;
@@ -39,6 +41,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewScrol
         // 加载数据
         swipeLayout.autoRefresh();
         onRefresh();
+
+//        Intent intent = new Intent(this, ThreeActivity.class);
+//        startActivity(intent);
+
+        Intent intent = new Intent(this, FourActivity.class);
+        startActivity(intent);
     }
 
     // 初始化控件
