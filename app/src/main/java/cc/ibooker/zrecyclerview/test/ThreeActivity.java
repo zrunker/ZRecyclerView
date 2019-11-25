@@ -10,17 +10,19 @@ import cc.ibooker.zrecyclerview.R;
 import cc.ibooker.zrecyclerviewlib.ZRecyclerView;
 
 public class ThreeActivity extends Activity {
+    private ZRecyclerView zRecyclerView;
+    private EmptyData emptyData;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_three);
 
-        final ZRecyclerView zRecyclerView = findViewById(R.id.zrv);
+        zRecyclerView = findViewById(R.id.zrv);
         zRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         // 添加空页面
-        final EmptyData emptyData = new EmptyData("隐藏", EmptyEnum.STATUE_HIDDEN);
+        emptyData = new EmptyData("隐藏", EmptyEnum.STATUE_HIDDEN);
         zRecyclerView.addEmptyView(new EmptyView(this, emptyData));
 
         // 添加适配器
@@ -31,15 +33,25 @@ public class ThreeActivity extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                // 更新数据
-                emptyData.setEmptyEnum(EmptyEnum.STATUE_DEFAULT);
-                // 刷新界面
-                zRecyclerView.refreshRvEmptyView();
+                // 更新
+                refreshEmptyView(EmptyEnum.STATUE_DEFAULT);
             }
         }, 5000);
 
-
     }
 
+    /**
+     * 刷新空页面
+     *
+     * @param emptyEnum 空页面状态
+     */
+    private void refreshEmptyView(EmptyEnum emptyEnum) {
+        if (emptyData != null) {
+            // 更新数据
+            emptyData.setEmptyEnum(emptyEnum);
+            // 刷新界面
+            zRecyclerView.refreshRvEmptyView();
+        }
+    }
 
 }

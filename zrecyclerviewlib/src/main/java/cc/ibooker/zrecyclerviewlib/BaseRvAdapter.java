@@ -2,6 +2,7 @@ package cc.ibooker.zrecyclerviewlib;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -12,17 +13,70 @@ import java.util.List;
  *
  * @author 邹峰立
  */
-public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
+public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHolder>
+        implements View.OnClickListener,
+        View.OnLongClickListener {
     private List<T> mList = new ArrayList<>();
     private RvItemClickListener rvItemClickListener;
+    private RvFooterViewClickListener rvFooterViewClickListener;
+    private RvItemLongClickListener rvItemLongClickListener;
     private final int TYPE_FOOTER = Integer.MIN_VALUE;
     private final int TYPE_EMPTY = TYPE_FOOTER + 1;
     private BaseRvFooterView rvFooterView;// 底部View
     private BaseRvEmptyView rvEmptyView;// 空页面
+    private ZRecyclerView zRecyclerView;
+
+    // 设置ZRecyclerView
+    void attachRecyclerView(ZRecyclerView zRecyclerView) {
+        this.zRecyclerView = zRecyclerView;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (zRecyclerView != null) {
+            // 根据RecyclerView获得当前View的位置
+            int position = zRecyclerView.getChildAdapterPosition(v);
+            // 执行点击事件
+            if (position < mList.size()) {
+                if (rvItemClickListener != null)
+                    rvItemClickListener.onRvItemClick(v, position);
+            } else if (rvFooterViewClickListener != null)
+                rvFooterViewClickListener.onRvFooterViewClick(v);
+        }
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        if (zRecyclerView != null) {
+            // 根据RecyclerView获得当前View的位置
+            int position = zRecyclerView.getChildAdapterPosition(v);
+            // 执行长按事件
+            if (rvItemLongClickListener != null)
+                rvItemLongClickListener.onRvItemLongClick(v, position);
+        }
+        return true;
+    }
 
     // 设置单项点击监听
     public void setRvItemClickListener(RvItemClickListener rvItemClickListener) {
         this.rvItemClickListener = rvItemClickListener;
+    }
+
+    // 设置底部点击监听
+    public void setRvFooterViewClickListener(RvFooterViewClickListener rvFooterViewClickListener) {
+        this.rvFooterViewClickListener = rvFooterViewClickListener;
+    }
+
+    // 设置单项长按监听
+    public void setRvItemLongClickListener(RvItemLongClickListener rvItemLongClickListener) {
+        this.rvItemLongClickListener = rvItemLongClickListener;
+    }
+
+    public BaseRvAdapter() {
+    }
+
+    public BaseRvAdapter(List<T> list) {
+        this.mList = list;
     }
 
     // 创建ViewHolder
@@ -109,16 +163,24 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     @NonNull
     @Override
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        if (viewType == TYPE_FOOTER)
+        if (viewType == TYPE_FOOTER) {
+            if (rvFooterView.getFooterView() != null)
+                rvFooterView.getFooterView().setOnClickListener(this);
             return new BaseViewHolder<>(rvFooterView.getFooterView());
-        else if (viewType == TYPE_EMPTY) {
+        } else if (viewType == TYPE_EMPTY) {
             return new BaseViewHolder(rvEmptyView.getEmptyView());
-        } else
-            return onCreateItemViewHolder(viewGroup, viewType);
+        } else {
+            BaseViewHolder baseViewHolder = onCreateItemViewHolder(viewGroup, viewType);
+            if (baseViewHolder.getItemView() != null) {
+                baseViewHolder.getItemView().setOnClickListener(this);
+                baseViewHolder.getItemView().setOnLongClickListener(this);
+            }
+            return baseViewHolder;
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BaseViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull final BaseViewHolder viewHolder, int position) {
         int viewType = getItemViewType(position);
         if (viewType == TYPE_FOOTER) {
             rvFooterView.refreshFooterView(rvFooterView.getFooterData());
@@ -126,9 +188,6 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
             rvEmptyView.refreshEmptyView(rvEmptyView.getEmptyData());
         } else
             onBindItemViewHolder(viewHolder, position);
-        // Item点击事件
-        if (rvItemClickListener != null)
-            rvItemClickListener.onRvItemClick(viewHolder.getItemView(), position);
     }
 
     @Override

@@ -5,16 +5,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import cc.ibooker.zrecyclerview.R;
-import cc.ibooker.zrecyclerview.test.EmptyData;
-import cc.ibooker.zrecyclerview.test.EmptyEnum;
-import cc.ibooker.zrecyclerview.test.EmptyView;
 import cc.ibooker.zrecyclerview.test.ThreeBean;
 import cc.ibooker.zrecyclerview.test.ThreeRvAdapter;
+import cc.ibooker.zrecyclerviewlib.RvItemClickListener;
+import cc.ibooker.zrecyclerviewlib.RvItemLongClickListener;
 import cc.ibooker.zrecyclerviewlib.RvScrollListener;
 import cc.ibooker.zrecyclerviewlib.ZRecyclerView;
 import cc.ibooker.zrecyclerviewlib.example.FooterData;
@@ -47,6 +47,18 @@ public class FourActivity extends Activity implements RvScrollListener.OnLoadLis
         // 添加底部
         footerData = new FooterData(RvFooterViewStatue.STATUE_HIDDEN);
         zRecyclerView.addFooterView(new RvFooterView(this, footerData));
+
+        zRecyclerView.setRvItemClickListener(new RvItemClickListener() {
+            @Override
+            public void onRvItemClick(View view, int position) {
+                Toast.makeText(FourActivity.this, "点击position：" + position, Toast.LENGTH_SHORT).show();
+            }
+        }).setRvItemLongClickListener(new RvItemLongClickListener() {
+            @Override
+            public void onRvItemLongClick(View view, int position) {
+                Toast.makeText(FourActivity.this, "长按position：" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

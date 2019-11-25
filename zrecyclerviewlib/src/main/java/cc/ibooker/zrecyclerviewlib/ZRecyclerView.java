@@ -21,6 +21,8 @@ public class ZRecyclerView extends RecyclerView {
     private RvScrollListener rvScrollListener;
     private RvScrollListener.OnLoadListener rvLoadListener;
     private RvItemClickListener rvItemClickListener;
+    private RvItemLongClickListener rvItemLongClickListener;
+    private RvFooterViewClickListener rvFooterViewClickListener;
 
     public ZRecyclerView(@NonNull Context context) {
         super(context);
@@ -52,6 +54,22 @@ public class ZRecyclerView extends RecyclerView {
         this.rvItemClickListener = rvItemClickListener;
         if (rvAdapter != null)
             rvAdapter.setRvItemClickListener(rvItemClickListener);
+        return this;
+    }
+
+    // 设置单项长按监听
+    public ZRecyclerView setRvItemLongClickListener(RvItemLongClickListener rvItemLongClickListener) {
+        this.rvItemLongClickListener = rvItemLongClickListener;
+        if (rvAdapter != null)
+            rvAdapter.setRvItemLongClickListener(rvItemLongClickListener);
+        return this;
+    }
+
+    // 设置底部点击监听
+    public ZRecyclerView setRvFooterViewClickListener(RvFooterViewClickListener rvFooterViewClickListener) {
+        this.rvFooterViewClickListener = rvFooterViewClickListener;
+        if (rvAdapter != null)
+            rvAdapter.setRvFooterViewClickListener(rvFooterViewClickListener);
         return this;
     }
 
@@ -98,6 +116,13 @@ public class ZRecyclerView extends RecyclerView {
     }
 
     /**
+     * 复写setAdapter
+     */
+    public void setAdapter(@NonNull BaseRvAdapter adapter) {
+        setRvAdapter(adapter);
+    }
+
+    /**
      * 设置适配器
      *
      * @param adapter 待设置的适配器
@@ -111,6 +136,11 @@ public class ZRecyclerView extends RecyclerView {
             rvAdapter.addRvEmptyView(emptyView);
         if (rvItemClickListener != null)
             rvAdapter.setRvItemClickListener(rvItemClickListener);
+        if (rvFooterViewClickListener != null)
+            rvAdapter.setRvFooterViewClickListener(rvFooterViewClickListener);
+        if (rvItemLongClickListener != null)
+            rvAdapter.setRvItemLongClickListener(rvItemLongClickListener);
+        rvAdapter.attachRecyclerView(this);
         return this;
     }
 

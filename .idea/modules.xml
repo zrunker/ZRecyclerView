@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ZRecyclerView.iml" filepath="$PROJECT_DIR$/ZRecyclerView.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zrecyclerviewlib/zrecyclerviewlib.iml" filepath="$PROJECT_DIR$/zrecyclerviewlib/zrecyclerviewlib.iml" />
     </modules>
   </component>
 </project>
