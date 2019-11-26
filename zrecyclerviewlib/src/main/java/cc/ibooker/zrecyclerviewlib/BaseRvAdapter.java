@@ -192,12 +192,12 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
 
     @Override
     public int getItemCount() {
+        if ((mList == null || mList.size() <= 0) && rvEmptyView != null)// 空页面
+            return 1;
+        if (mList != null && mList.size() > 0 && rvFooterView != null)// 添加底部
+            return mList.size() + 1;
         if (mList == null)
             return 0;
-        if (mList.size() <= 0 && rvEmptyView != null)// 空页面
-            return 1;
-        if (rvFooterView != null)// 添加底部
-            return mList.size() + 1;
         return mList.size();
     }
 
