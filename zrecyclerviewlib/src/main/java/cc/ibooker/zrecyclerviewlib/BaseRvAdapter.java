@@ -14,8 +14,7 @@ import java.util.List;
  * @author 邹峰立
  */
 public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHolder>
-        implements View.OnClickListener,
-        View.OnLongClickListener {
+        implements View.OnClickListener, View.OnLongClickListener {
     private List<T> mList = new ArrayList<>();
     private RvItemClickListener rvItemClickListener;
     private RvFooterViewClickListener rvFooterViewClickListener;
