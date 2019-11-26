@@ -80,8 +80,10 @@ public class ZRecyclerView extends RecyclerView {
      */
     public ZRecyclerView addEmptyView(@NonNull BaseRvEmptyView emptyView) {
         this.emptyView = emptyView;
-        if (rvAdapter != null)
+        if (rvAdapter != null) {
             rvAdapter.addRvEmptyView(emptyView);
+            rvAdapter.updateRvEmptyView();
+        }
         return this;
     }
 
@@ -92,8 +94,10 @@ public class ZRecyclerView extends RecyclerView {
      */
     public ZRecyclerView addFooterView(@NonNull BaseRvFooterView footerView) {
         this.footerView = footerView;
-        if (rvAdapter != null)
+        if (rvAdapter != null) {
             rvAdapter.addRvFooterView(footerView);
+            rvAdapter.updateRvFooterView();
+        }
         return this;
     }
 
@@ -128,7 +132,6 @@ public class ZRecyclerView extends RecyclerView {
      * @param adapter 待设置的适配器
      */
     public ZRecyclerView setRvAdapter(@NonNull BaseRvAdapter adapter) {
-        super.setAdapter(adapter);
         this.rvAdapter = adapter;
         if (footerView != null)
             rvAdapter.addRvFooterView(footerView);
@@ -141,6 +144,7 @@ public class ZRecyclerView extends RecyclerView {
         if (rvItemLongClickListener != null)
             rvAdapter.setRvItemLongClickListener(rvItemLongClickListener);
         rvAdapter.attachRecyclerView(this);
+        super.setAdapter(adapter);
         return this;
     }
 
