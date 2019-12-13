@@ -14,14 +14,14 @@ import java.lang.reflect.Method;
  * 自定义自动下拉刷新SwipeRefreshLayout
  * Created by 邹峰立 on 2017/5/10.
  */
-public class AutoSwipeRefreshLayout extends SwipeRefreshLayout {
+public class ZSwipeRefreshLayout extends SwipeRefreshLayout {
     private OnRefreshListener onRefreshListener;
 
-    public AutoSwipeRefreshLayout(@NonNull Context context) {
+    public ZSwipeRefreshLayout(@NonNull Context context) {
         this(context, null);
     }
 
-    public AutoSwipeRefreshLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public ZSwipeRefreshLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
@@ -55,9 +55,9 @@ public class AutoSwipeRefreshLayout extends SwipeRefreshLayout {
     }
 
     /**
-     * 自动刷新
+     * 自动刷新 - 执行下拉刷新
      */
-    public void autoRefresh() {
+    public void executeRefresh() {
         // 修改界面
         try {
             Field mCircleView = SwipeRefreshLayout.class.getDeclaredField("mCircleView");

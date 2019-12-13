@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <cc.ibooker.zrecyclerviewlib.AutoSwipeRefreshLayout
+    <cc.ibooker.zrecyclerviewlib.ZSwipeRefreshLayout
         android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -13,6 +13,6 @@
             android:id="@+id/zrv"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </cc.ibooker.zrecyclerviewlib.AutoSwipeRefreshLayout>
+    </cc.ibooker.zrecyclerviewlib.ZSwipeRefreshLayout>
 
 </LinearLayout>

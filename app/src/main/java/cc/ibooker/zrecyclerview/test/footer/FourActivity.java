@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import cc.ibooker.zrecyclerview.R;
 import cc.ibooker.zrecyclerview.test.ThreeBean;
 import cc.ibooker.zrecyclerview.test.ThreeRvAdapter;
-import cc.ibooker.zrecyclerviewlib.AutoSwipeRefreshLayout;
+import cc.ibooker.zrecyclerviewlib.ZSwipeRefreshLayout;
 import cc.ibooker.zrecyclerviewlib.RvItemClickListener;
 import cc.ibooker.zrecyclerviewlib.RvItemLongClickListener;
 import cc.ibooker.zrecyclerviewlib.RvScrollListener;
@@ -26,7 +26,7 @@ import cc.ibooker.zrecyclerviewlib.example.RvFooterViewStatue;
 public class FourActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener, RvScrollListener.OnLoadListener {
     private ZRecyclerView zRecyclerView;
     private FooterData footerData;
-    private AutoSwipeRefreshLayout swipeContainer;
+    private ZSwipeRefreshLayout swipeContainer;
     private ThreeRvAdapter threeRvAdapter;
     private ArrayList<ThreeBean> list = new ArrayList<>();
 
