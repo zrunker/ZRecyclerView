@@ -55,10 +55,9 @@ public class ZSwipeRefreshLayout extends SwipeRefreshLayout {
     }
 
     /**
-     * 自动刷新 - 执行下拉刷新
+     * 自动刷新 - 修改界面
      */
-    public void executeRefresh() {
-        // 修改界面
+    public void autoRefresh() {
         try {
             Field mCircleView = SwipeRefreshLayout.class.getDeclaredField("mCircleView");
             mCircleView.setAccessible(true);
@@ -71,6 +70,15 @@ public class ZSwipeRefreshLayout extends SwipeRefreshLayout {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+    }
+
+    /**
+     * 自动刷新 - 执行下拉刷新事件
+     */
+    public void executeRefresh() {
+        // 修改界面
+        autoRefresh();
         // 执行刷新事件
         if (onRefreshListener != null)
             onRefreshListener.onRefresh();
