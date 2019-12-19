@@ -1,4 +1,4 @@
-package cc.ibooker.zrecyclerviewlib.example;
+package cc.ibooker.zrecyclerviewlib.example.footer;
 
 import android.content.Context;
 import android.view.LayoutInflater;

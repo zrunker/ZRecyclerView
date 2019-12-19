@@ -1,4 +1,4 @@
-package cc.ibooker.zrecyclerviewlib.example;
+package cc.ibooker.zrecyclerviewlib.example.footer;
 
 /**
  * 底部数据

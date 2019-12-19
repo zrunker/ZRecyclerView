@@ -19,9 +19,9 @@ import cc.ibooker.zrecyclerviewlib.RvItemClickListener;
 import cc.ibooker.zrecyclerviewlib.RvItemLongClickListener;
 import cc.ibooker.zrecyclerviewlib.RvScrollListener;
 import cc.ibooker.zrecyclerviewlib.ZRecyclerView;
-import cc.ibooker.zrecyclerviewlib.example.FooterData;
-import cc.ibooker.zrecyclerviewlib.example.RvFooterView;
-import cc.ibooker.zrecyclerviewlib.example.RvFooterViewStatue;
+import cc.ibooker.zrecyclerviewlib.example.footer.FooterData;
+import cc.ibooker.zrecyclerviewlib.example.footer.RvFooterView;
+import cc.ibooker.zrecyclerviewlib.example.footer.RvFooterViewStatue;
 
 public class FourActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener, RvScrollListener.OnLoadListener {
     private ZRecyclerView zRecyclerView;
