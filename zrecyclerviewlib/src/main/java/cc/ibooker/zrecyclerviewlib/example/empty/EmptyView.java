@@ -59,7 +59,7 @@ public class EmptyView extends BaseRvEmptyView<EmptyData> {
                         break;
                 }
             else
-                titleTv.setText(data.getTitle());
+                titleTv.setText(title);
         }
     }
 }
