@@ -1,6 +1,7 @@
 package cc.ibooker.zrecyclerviewlib.example.empty;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,23 +40,26 @@ public class EmptyView extends BaseRvEmptyView<EmptyData> {
     public void refreshEmptyView(EmptyData data) {
         if (data != null) {
             EmptyEnum emptyEnum = data.getEmptyEnum();
-//            switch (emptyEnum) {
-//                case STATUE_DEFAULT:// 默认状态
-//
-//                    break;
-//                case STATUE_HIDDEN:// 隐藏状态
-//
-//                    break;
-//                case STATUE_FAILED:// 失败状态
-//
-//                    break;
-//                case STATUE_ERROR:// 错误状态
-//
-//                    break;
-//            }
             statueIv.setImageResource(data.getRes());
-            titleTv.setText(data.getTitle());
             descTv.setText(data.getDesc());
+            String title = data.getTitle();
+            if (TextUtils.isEmpty(title))
+                switch (emptyEnum) {
+                    case STATUE_DEFAULT:// 默认状态
+                        titleTv.setText("默认状态");
+                        break;
+                    case STATUE_HIDDEN:// 隐藏状态
+                        titleTv.setText("隐藏状态");
+                        break;
+                    case STATUE_FAILED:// 失败状态
+                        titleTv.setText("失败状态");
+                        break;
+                    case STATUE_ERROR:// 错误状态
+                        titleTv.setText("错误状态");
+                        break;
+                }
+            else
+                titleTv.setText(data.getTitle());
         }
     }
 }
