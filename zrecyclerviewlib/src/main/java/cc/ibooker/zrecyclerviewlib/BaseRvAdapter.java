@@ -206,6 +206,16 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
             return TYPE_EMPTY;
         if (mList != null && position >= mList.size() && rvFooterView != null)// 显示底部
             return TYPE_FOOTER;
+        return getViewType(position);
+    }
+
+    /**
+     * 获取ItemType
+     *
+     * @param position 列表项
+     * @return item类型
+     */
+    public int getViewType(int position) {
         return super.getItemViewType(position);
     }
 }
