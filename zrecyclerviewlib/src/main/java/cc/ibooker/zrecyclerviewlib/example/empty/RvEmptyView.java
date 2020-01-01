@@ -16,11 +16,11 @@ import cc.ibooker.zrecyclerviewlib.R;
  *
  * @author 邹峰立
  */
-public class EmptyView extends BaseRvEmptyView<EmptyData> {
+public class RvEmptyView extends BaseRvEmptyView<EmptyData> {
     private ImageView statueIv;
     private TextView titleTv, descTv;
 
-    public EmptyView(Context context, EmptyData data) {
+    public RvEmptyView(Context context, EmptyData data) {
         super(context, data);
     }
 

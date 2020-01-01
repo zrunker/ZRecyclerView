@@ -14,14 +14,18 @@ import java.util.ArrayList;
 import cc.ibooker.zrecyclerview.R;
 import cc.ibooker.zrecyclerview.test.ThreeBean;
 import cc.ibooker.zrecyclerview.test.ThreeRvAdapter;
-import cc.ibooker.zrecyclerviewlib.ZSwipeRefreshLayout;
+import cc.ibooker.zrecyclerviewlib.RvFooterViewClickListener;
+import cc.ibooker.zrecyclerviewlib.RvHeadViewClickListener;
 import cc.ibooker.zrecyclerviewlib.RvItemClickListener;
 import cc.ibooker.zrecyclerviewlib.RvItemLongClickListener;
 import cc.ibooker.zrecyclerviewlib.RvScrollListener;
 import cc.ibooker.zrecyclerviewlib.ZRecyclerView;
+import cc.ibooker.zrecyclerviewlib.ZSwipeRefreshLayout;
 import cc.ibooker.zrecyclerviewlib.example.footer.FooterData;
 import cc.ibooker.zrecyclerviewlib.example.footer.RvFooterView;
 import cc.ibooker.zrecyclerviewlib.example.footer.RvFooterViewStatue;
+import cc.ibooker.zrecyclerviewlib.example.head.HeadData;
+import cc.ibooker.zrecyclerviewlib.example.head.RvHeadView;
 
 public class FourActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener, RvScrollListener.OnLoadListener {
     private ZRecyclerView zRecyclerView;
@@ -54,19 +58,33 @@ public class FourActivity extends Activity implements SwipeRefreshLayout.OnRefre
         // 添加底部
         footerData = new FooterData(RvFooterViewStatue.STATUE_HIDDEN);
         zRecyclerView.addFooterView(new RvFooterView(this, footerData));
-
-        zRecyclerView.setRvItemClickListener(new RvItemClickListener() {
+        zRecyclerView.setRvFooterViewClickListener(new RvFooterViewClickListener() {
             @Override
-            public void onRvItemClick(View view, int position) {
-                Toast.makeText(FourActivity.this, "点击position：" + position, Toast.LENGTH_SHORT).show();
-            }
-        }).setRvItemLongClickListener(new RvItemLongClickListener() {
-            @Override
-            public void onRvItemLongClick(View view, int position) {
-                Toast.makeText(FourActivity.this, "长按position：" + position, Toast.LENGTH_SHORT).show();
+            public void onRvFooterViewClick(View view) {
+                Toast.makeText(FourActivity.this, "点击底部", Toast.LENGTH_SHORT).show();
             }
         });
 
+        zRecyclerView.setRvItemClickListener(new RvItemClickListener() {
+            @Override
+            public void onRvItemClick(View view, int position, int realPosition) {
+                Toast.makeText(FourActivity.this, "点击position：" + position + " 点击数据列表position：" + realPosition, Toast.LENGTH_SHORT).show();
+            }
+        }).setRvItemLongClickListener(new RvItemLongClickListener() {
+            @Override
+            public void onRvItemLongClick(View view, int position, int realPosition) {
+                Toast.makeText(FourActivity.this, "长按position：" + position + " 点击数据列表position：" + realPosition, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        HeadData headData = new HeadData("测试头部");
+        zRecyclerView.addHeadView(new RvHeadView(this, headData));
+        zRecyclerView.setRvHeadViewClickListener(new RvHeadViewClickListener() {
+            @Override
+            public void onRvHeadViewClick(View view) {
+                Toast.makeText(FourActivity.this, "点击头部", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

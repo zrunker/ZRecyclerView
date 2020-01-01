@@ -34,6 +34,11 @@ public class RvScrollListener extends RecyclerView.OnScrollListener {
     private int lastVisibleItemPosition;
 
     /**
+     * 第一个可见的item的位置
+     */
+    private int firstVisibleItemPosition;
+
+    /**
      * 是否正在加载
      */
     private boolean isLoadingMore = false;
@@ -49,49 +54,54 @@ public class RvScrollListener extends RecyclerView.OnScrollListener {
         this.dy = dy;
         // 获取RecyclerView布局管理器
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-        if (layoutManagerType == null) {
-            if (layoutManager instanceof GridLayoutManager) {
-                layoutManagerType = LAYOUT_MANAGER_TYPE.GRID;
-            } else if (layoutManager instanceof LinearLayoutManager) {
-                layoutManagerType = LAYOUT_MANAGER_TYPE.LINEAR;
-            } else if (layoutManager instanceof StaggeredGridLayoutManager) {
-                layoutManagerType = LAYOUT_MANAGER_TYPE.STAGGERED_GRID;
-            } else {
-                throw new RuntimeException("Unsupported LayoutManager used. Valid ones are LinearLayoutManager, GridLayoutManager and StaggeredGridLayoutManager");
-            }
-        }
-        // 最后一个可见的item的位置
-        switch (layoutManagerType) {
-            case LINEAR:
-                lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
-                break;
-            case GRID:
-                lastVisibleItemPosition = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
-                break;
-            case STAGGERED_GRID:
-                StaggeredGridLayoutManager staggeredGridLayoutManager = (StaggeredGridLayoutManager) layoutManager;
-                if (lastPositions == null) {
-                    lastPositions = new int[staggeredGridLayoutManager.getSpanCount()];
+        if (layoutManager != null) {
+            if (layoutManagerType == null) {
+                if (layoutManager instanceof GridLayoutManager) {
+                    layoutManagerType = LAYOUT_MANAGER_TYPE.GRID;
+                } else if (layoutManager instanceof LinearLayoutManager) {
+                    layoutManagerType = LAYOUT_MANAGER_TYPE.LINEAR;
+                } else if (layoutManager instanceof StaggeredGridLayoutManager) {
+                    layoutManagerType = LAYOUT_MANAGER_TYPE.STAGGERED_GRID;
+                } else {
+                    throw new RuntimeException("Unsupported LayoutManager used. Valid ones are LinearLayoutManager, GridLayoutManager and StaggeredGridLayoutManager");
                 }
-                staggeredGridLayoutManager.findLastVisibleItemPositions(lastPositions);
-                lastVisibleItemPosition = findMax(lastPositions);
-                break;
-        }
+            }
+            // 最后一个可见的item的位置
+            switch (layoutManagerType) {
+                case LINEAR:
+                    lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+                    firstVisibleItemPosition = ((LinearLayoutManager) layoutManager).findFirstCompletelyVisibleItemPosition();
+                    break;
+                case GRID:
+                    lastVisibleItemPosition = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
+                    firstVisibleItemPosition = ((GridLayoutManager) layoutManager).findFirstCompletelyVisibleItemPosition();
+                    break;
+                case STAGGERED_GRID:
+                    StaggeredGridLayoutManager staggeredGridLayoutManager = (StaggeredGridLayoutManager) layoutManager;
+                    if (lastPositions == null)
+                        lastPositions = new int[staggeredGridLayoutManager.getSpanCount()];
+                    staggeredGridLayoutManager.findLastVisibleItemPositions(lastPositions);
+                    lastVisibleItemPosition = findMax(lastPositions);
+                    staggeredGridLayoutManager.findFirstCompletelyVisibleItemPositions(lastPositions);
+                    firstVisibleItemPosition = findMin(lastPositions);
+                    break;
+            }
 
-        /**
-         * 设置滚动距离事件
-         */
-        if (onScrollDistanceListener != null) {
-            onScrollDistanceListener.onScrollDistance(dy);
-        }
+            /**
+             * 设置滚动距离事件
+             */
+            if (onScrollDistanceListener != null) {
+                onScrollDistanceListener.onScrollDistance(dy);
+            }
 
-        /**
-         * 设置指定位置到顶部距离事件
-         */
-        if (targetPosition >= 0 && targetPosition < layoutManager.getItemCount() && onPositionTopDistanceListener != null) {
-            View view = layoutManager.findViewByPosition(targetPosition);
-            if (view != null) {
-                onPositionTopDistanceListener.onPositionTopDistance(view.getTop());
+            /**
+             * 设置指定位置到顶部距离事件
+             */
+            if (targetPosition >= 0 && targetPosition < layoutManager.getItemCount() && onPositionTopDistanceListener != null) {
+                View view = layoutManager.findViewByPosition(targetPosition);
+                if (view != null) {
+                    onPositionTopDistanceListener.onPositionTopDistance(view.getTop());
+                }
             }
         }
     }
@@ -102,26 +112,38 @@ public class RvScrollListener extends RecyclerView.OnScrollListener {
         super.onScrollStateChanged(recyclerView, newState);
         // 获取RecyclerView布局管理器
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-        // 获取RecyclerView可见Item的数量
-        int visibleItemCount = layoutManager.getChildCount();
-        // 获取RecyclerView总Item的数量
-        int totalItemCount = layoutManager.getItemCount();
-        // 判断是否需要加载更多。1、可见性大于0。2、当前处于滚动停止状态。3、最后一个可见项大于或等于Item的总数（滚动到最底部）
-        if (dy > 0 && visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE && (lastVisibleItemPosition >= totalItemCount - 1)) {
-            /**
-             * 加载更多 事件
-             */
-            if (!isLoadingMore && onLoadListener != null) {
-                onLoadListener.onLoad();
-                isLoadingMore = true;
+        if (layoutManager != null) {
+            // 获取RecyclerView可见Item的数量
+            int visibleItemCount = layoutManager.getChildCount();
+            // 获取RecyclerView总Item的数量
+            int totalItemCount = layoutManager.getItemCount();
+            // 判断是否需要加载更多。
+            // 1、可见性大于0。
+            // 2、当前处于滚动停止状态。
+            // 3、最后一个可见项大于或等于Item的总数（滚动到最底部）
+            if (dy > 0 && visibleItemCount > 0
+                    && newState == RecyclerView.SCROLL_STATE_IDLE
+                    && (lastVisibleItemPosition >= totalItemCount - 1)) {
+                /**
+                 * 加载更多 事件
+                 */
+                if (!isLoadingMore && onLoadListener != null) {
+                    onLoadListener.onLoad();
+                    isLoadingMore = true;
+                }
             }
-        }
 
-        /**
-         * 滚动状态改变事件
-         */
-        if (onScrollStateChangedListener != null) {
-            onScrollStateChangedListener.onScrollStateChanged(newState);
+            /**
+             * 滚动状态改变事件
+             */
+            if (onScrollStateChangedListener != null)
+                onScrollStateChangedListener.onScrollStateChanged(newState);
+
+            /**
+             * 是否滚动到最顶部监听
+             */
+            if (onIsTopListener != null)
+                onIsTopListener.isTop(firstVisibleItemPosition == 0);
         }
     }
 
@@ -134,6 +156,17 @@ public class RvScrollListener extends RecyclerView.OnScrollListener {
             }
         }
         return max;
+    }
+
+    // 计算最小值
+    private int findMin(int[] firstPositions) {
+        int min = firstPositions[0];
+        for (int value : firstPositions) {
+            if (value < min) {
+                min = value;
+            }
+        }
+        return min;
     }
 
     public boolean isLoadingMore() {
@@ -188,5 +221,16 @@ public class RvScrollListener extends RecyclerView.OnScrollListener {
     public void setOnPositionTopDistanceListener(OnPositionTopDistanceListener onPositionTopDistanceListener, int position) {
         this.onPositionTopDistanceListener = onPositionTopDistanceListener;
         this.targetPosition = position;
+    }
+
+    // 是否滚动到顶部监听
+    public interface OnIsTopListener {
+        void isTop(boolean isTop);
+    }
+
+    private OnIsTopListener onIsTopListener;
+
+    public void setOnIsTopListener(OnIsTopListener onIsTopListener) {
+        this.onIsTopListener = onIsTopListener;
     }
 }

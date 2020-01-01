@@ -19,10 +19,13 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     private RvItemClickListener rvItemClickListener;
     private RvFooterViewClickListener rvFooterViewClickListener;
     private RvItemLongClickListener rvItemLongClickListener;
+    private RvHeadViewClickListener rvHeadViewClickListener;
     private final int TYPE_FOOTER = Integer.MIN_VALUE;
     private final int TYPE_EMPTY = TYPE_FOOTER + 1;
+    private final int TYPE_HEARD = TYPE_EMPTY + 1;
     private BaseRvFooterView rvFooterView;// 底部View
     private BaseRvEmptyView rvEmptyView;// 空页面
+    private BaseRvHeadView rvHeadView;// 头部View
     private ZRecyclerView zRecyclerView;
 
     // 设置ZRecyclerView
@@ -36,9 +39,12 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
             // 根据RecyclerView获得当前View的位置
             int position = zRecyclerView.getChildAdapterPosition(v);
             // 执行点击事件
-            if (position < mList.size()) {
+            if (position == 0 && rvHeadView != null) {
+                if (rvHeadViewClickListener != null)
+                    rvHeadViewClickListener.onRvHeadViewClick(v);
+            } else if (position < getItemCount() - 1) {
                 if (rvItemClickListener != null)
-                    rvItemClickListener.onRvItemClick(v, position);
+                    rvItemClickListener.onRvItemClick(v, position, getRealListPosition(position));
             } else if (rvFooterViewClickListener != null)
                 rvFooterViewClickListener.onRvFooterViewClick(v);
         }
@@ -51,7 +57,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
             int position = zRecyclerView.getChildAdapterPosition(v);
             // 执行长按事件
             if (rvItemLongClickListener != null)
-                rvItemLongClickListener.onRvItemLongClick(v, position);
+                rvItemLongClickListener.onRvItemLongClick(v, position, getRealListPosition(position));
         }
         return true;
     }
@@ -59,6 +65,11 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     // 设置单项点击监听
     public void setRvItemClickListener(RvItemClickListener rvItemClickListener) {
         this.rvItemClickListener = rvItemClickListener;
+    }
+
+    // 设置头部点击监听
+    public void setRvHeadViewClickListener(RvHeadViewClickListener rvHeadViewClickListener) {
+        this.rvHeadViewClickListener = rvHeadViewClickListener;
     }
 
     // 设置底部点击监听
@@ -105,6 +116,16 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     }
 
     /**
+     * 设置头部View
+     *
+     * @param rvHeadView 待添加View
+     */
+    public BaseRvAdapter addRvHeadView(BaseRvHeadView rvHeadView) {
+        this.rvHeadView = rvHeadView;
+        return this;
+    }
+
+    /**
      * 刷新空界面View
      */
     public BaseRvAdapter updateRvEmptyView() {
@@ -121,6 +142,16 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     public BaseRvAdapter updateRvFooterView() {
         if (rvFooterView != null) {
             rvFooterView.refreshFooterView(rvFooterView.getFooterData());
+        }
+        return this;
+    }
+
+    /**
+     * 刷新头部View
+     */
+    public BaseRvAdapter updateRvHeadView() {
+        if (rvHeadView != null) {
+            rvHeadView.refreshHeadView(rvHeadView.getHeadData());
         }
         return this;
     }
@@ -168,6 +199,10 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
             return new BaseViewHolder<>(rvFooterView.getFooterView());
         } else if (viewType == TYPE_EMPTY) {
             return new BaseViewHolder(rvEmptyView.getEmptyView());
+        } else if (viewType == TYPE_HEARD) {
+            if (rvHeadView.getHeadView() != null)
+                rvHeadView.getHeadView().setOnClickListener(this);
+            return new BaseViewHolder(rvHeadView.getHeadView());
         } else {
             BaseViewHolder baseViewHolder = onCreateItemViewHolder(viewGroup, viewType);
             if (baseViewHolder.getItemView() != null) {
@@ -185,28 +220,35 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
             rvFooterView.refreshFooterView(rvFooterView.getFooterData());
         } else if (viewType == TYPE_EMPTY) {
             rvEmptyView.refreshEmptyView(rvEmptyView.getEmptyData());
+        } else if (viewType == TYPE_HEARD) {
+            rvHeadView.refreshHeadView(rvHeadView.getHeadData());
         } else
-            onBindItemViewHolder(viewHolder, position);
+            onBindItemViewHolder(viewHolder, getRealListPosition(position));
     }
 
     @Override
     public int getItemCount() {
         if ((mList == null || mList.size() <= 0) && rvEmptyView != null)// 空页面
             return 1;
+        int total = 0;
+        if (mList != null)
+            total = total + mList.size();
+        if (rvHeadView != null)
+            total = total + 1;
         if (mList != null && mList.size() > 0 && rvFooterView != null)// 添加底部
-            return mList.size() + 1;
-        if (mList == null)
-            return 0;
-        return mList.size();
+            total = total + 1;
+        return total;
     }
 
     @Override
     public int getItemViewType(int position) {
         if ((mList == null || mList.size() <= 0) && rvEmptyView != null)// 显示空页面
             return TYPE_EMPTY;
-        if (mList != null && position >= mList.size() && rvFooterView != null)// 显示底部
+        if (position == 0 && rvHeadView != null)// 显示头部
+            return TYPE_HEARD;
+        if (mList != null && position >= getItemCount() - 1 && rvFooterView != null)// 显示底部
             return TYPE_FOOTER;
-        return getViewType(position);
+        return getViewType(getRealListPosition(position));
     }
 
     /**
@@ -217,5 +259,14 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
      */
     public int getViewType(int position) {
         return super.getItemViewType(position);
+    }
+
+    /**
+     * 获取mList真实位置
+     *
+     * @param position 原位置
+     */
+    private int getRealListPosition(int position) {
+        return rvHeadView != null ? position - 1 : position;
     }
 }

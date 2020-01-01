@@ -11,7 +11,8 @@ public interface RvItemLongClickListener {
     /**
      * 长按事件
      *
-     * @param position 被点击项
+     * @param position     被点击项
+     * @param realPosition 数据列表位置
      */
-    void onRvItemLongClick(View view, int position);
+    void onRvItemLongClick(View view, int position, int realPosition);
 }

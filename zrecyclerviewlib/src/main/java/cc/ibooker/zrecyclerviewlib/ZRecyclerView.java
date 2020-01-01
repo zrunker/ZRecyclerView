@@ -3,6 +3,7 @@ package cc.ibooker.zrecyclerviewlib;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
@@ -11,6 +12,7 @@ import android.util.AttributeSet;
  * 1- 加载更多监听
  * 2- 显示空页面
  * 3- 显示底部View
+ * 4- 显示头部View
  *
  * @author 邹峰立
  */
@@ -18,22 +20,43 @@ public class ZRecyclerView extends RecyclerView {
     private BaseRvAdapter rvAdapter;
     private BaseRvEmptyView emptyView;
     private BaseRvFooterView footerView;
+    private BaseRvHeadView headView;
     private RvScrollListener rvScrollListener;
     private RvScrollListener.OnLoadListener rvLoadListener;
     private RvItemClickListener rvItemClickListener;
     private RvItemLongClickListener rvItemLongClickListener;
     private RvFooterViewClickListener rvFooterViewClickListener;
+    private RvHeadViewClickListener rvHeadViewClickListener;
+    private LayoutManager layoutManager;
 
     public ZRecyclerView(@NonNull Context context) {
-        super(context);
+        this(context, null);
     }
 
     public ZRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
     }
 
     public ZRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        init(context);
+    }
+
+    // 初始化
+    private void init(Context context) {
+        this.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+    }
+
+    @Override
+    public void setLayoutManager(@Nullable LayoutManager layout) {
+        layoutManager = layout;
+        super.setLayoutManager(layoutManager);
+    }
+
+    @Nullable
+    @Override
+    public LayoutManager getLayoutManager() {
+        return layoutManager;
     }
 
     // 设置是否加载更多
@@ -73,6 +96,14 @@ public class ZRecyclerView extends RecyclerView {
         return this;
     }
 
+    // 设置头部点击监听
+    public ZRecyclerView setRvHeadViewClickListener(RvHeadViewClickListener rvHeadViewClickListener) {
+        this.rvHeadViewClickListener = rvHeadViewClickListener;
+        if (rvAdapter != null)
+            rvAdapter.setRvHeadViewClickListener(rvHeadViewClickListener);
+        return this;
+    }
+
     /**
      * 添加空页面
      *
@@ -102,6 +133,20 @@ public class ZRecyclerView extends RecyclerView {
     }
 
     /**
+     * 添加头部View
+     *
+     * @param headView 待添加头部View
+     */
+    public ZRecyclerView addHeadView(@NonNull BaseRvHeadView headView) {
+        this.headView = headView;
+        if (rvAdapter != null) {
+            rvAdapter.addRvHeadView(headView);
+            rvAdapter.updateRvHeadView();
+        }
+        return this;
+    }
+
+    /**
      * 刷新空界面View
      */
     public ZRecyclerView refreshRvEmptyView() {
@@ -120,6 +165,15 @@ public class ZRecyclerView extends RecyclerView {
     }
 
     /**
+     * 刷新顶部View
+     */
+    public ZRecyclerView refreshRvHeadView() {
+        if (rvAdapter != null)
+            rvAdapter.updateRvHeadView();
+        return this;
+    }
+
+    /**
      * 复写setAdapter
      */
     public void setAdapter(@NonNull BaseRvAdapter adapter) {
@@ -133,6 +187,8 @@ public class ZRecyclerView extends RecyclerView {
      */
     public ZRecyclerView setRvAdapter(@NonNull BaseRvAdapter adapter) {
         this.rvAdapter = adapter;
+        if (headView != null)
+            rvAdapter.addRvHeadView(headView);
         if (footerView != null)
             rvAdapter.addRvFooterView(footerView);
         if (emptyView != null)
@@ -141,6 +197,8 @@ public class ZRecyclerView extends RecyclerView {
             rvAdapter.setRvItemClickListener(rvItemClickListener);
         if (rvFooterViewClickListener != null)
             rvAdapter.setRvFooterViewClickListener(rvFooterViewClickListener);
+        if (rvHeadViewClickListener != null)
+            rvAdapter.setRvHeadViewClickListener(rvHeadViewClickListener);
         if (rvItemLongClickListener != null)
             rvAdapter.setRvItemLongClickListener(rvItemLongClickListener);
         rvAdapter.attachRecyclerView(this);
