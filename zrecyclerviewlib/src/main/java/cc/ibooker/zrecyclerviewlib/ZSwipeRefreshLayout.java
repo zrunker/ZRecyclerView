@@ -44,7 +44,7 @@ public class ZSwipeRefreshLayout extends SwipeRefreshLayout {
     /**
      * 取消下拉刷新监听
      */
-    public void setCanRefresh(boolean isCanRefresh) {
+    public ZSwipeRefreshLayout setCanRefresh(boolean isCanRefresh) {
         if (isCanRefresh) {
             setOnRefreshListener(onRefreshListener);
             setRefreshing(false);
@@ -52,12 +52,13 @@ public class ZSwipeRefreshLayout extends SwipeRefreshLayout {
             setOnRefreshListener(null);
             setRefreshing(true);
         }
+        return this;
     }
 
     /**
      * 自动刷新 - 修改界面
      */
-    public void autoRefresh() {
+    public ZSwipeRefreshLayout autoRefresh() {
         try {
             Field mCircleView = SwipeRefreshLayout.class.getDeclaredField("mCircleView");
             mCircleView.setAccessible(true);
@@ -70,17 +71,18 @@ public class ZSwipeRefreshLayout extends SwipeRefreshLayout {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        return this;
     }
 
     /**
      * 自动刷新 - 执行下拉刷新事件
      */
-    public void executeRefresh() {
+    public ZSwipeRefreshLayout executeRefresh() {
         // 修改界面
         autoRefresh();
         // 执行刷新事件
         if (onRefreshListener != null)
             onRefreshListener.onRefresh();
+        return this;
     }
 }
