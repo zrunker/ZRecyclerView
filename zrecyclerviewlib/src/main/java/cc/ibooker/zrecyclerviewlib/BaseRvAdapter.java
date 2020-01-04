@@ -179,7 +179,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     }
 
     /**
-     * 局部刷新
+     * 局部刷新-多项
      *
      * @param positionStart 开始项
      * @param itemCount     刷新项数
@@ -187,6 +187,45 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     public BaseRvAdapter updateItems(int positionStart, int itemCount) {
         if (itemCount > 0)
             this.notifyItemRangeChanged(positionStart, itemCount);
+        return this;
+    }
+
+    /**
+     * 局部刷新-单项
+     *
+     * @param position 待刷新的项
+     */
+    public BaseRvAdapter updateItem(int position) {
+        this.notifyItemRangeChanged(position, 1);
+        return this;
+    }
+
+    /**
+     * 局部移除 - 多项
+     *
+     * @param positionStart 开始项
+     * @param itemCount     移除项数
+     */
+    public BaseRvAdapter removeItems(int positionStart, int itemCount) {
+        for (int i = 0; i < itemCount; i++) {
+            positionStart++;
+            removeItem(positionStart);
+        }
+        return this;
+    }
+
+    /**
+     * 局部移除 - 单项
+     *
+     * @param position 待移除的项
+     */
+    public BaseRvAdapter removeItem(int position) {
+        if (mList != null && mList.size() > 0
+                && position >= 0 && position < mList.size()) {
+            mList.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, mList.size());
+        }
         return this;
     }
 
