@@ -13,7 +13,7 @@ import android.view.LayoutInflater;
  */
 public class ZRvRefreshAndLoadMoreLayout extends ZSwipeRefreshLayout
         implements RvScrollListener.OnLoadListener, ZSwipeRefreshLayout.OnRefreshListener {
-    ZRecyclerView zRv;
+    public ZRecyclerView zRv;
 
     public ZRvRefreshAndLoadMoreLayout(@NonNull Context context) {
         this(context, null);
