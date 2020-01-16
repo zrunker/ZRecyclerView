@@ -42,7 +42,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
             if (position == 0 && rvHeadView != null) {
                 if (rvHeadViewClickListener != null)
                     rvHeadViewClickListener.onRvHeadViewClick(v);
-            } else if (position < getItemCount() - 1) {
+            } else if (position >= 0 && position < getItemCount()) {
                 if (rvItemClickListener != null)
                     rvItemClickListener.onRvItemClick(v, position, getRealListPosition(position));
             } else if (rvFooterViewClickListener != null)
