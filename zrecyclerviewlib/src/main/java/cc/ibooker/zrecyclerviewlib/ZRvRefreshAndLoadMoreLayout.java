@@ -29,12 +29,14 @@ public class ZRvRefreshAndLoadMoreLayout extends ZSwipeRefreshLayout
 
     @Override
     public void onRefresh() {
+        zRv.setLoading(false);
         if (onRvRefreshAndLoadMoreListener != null)
             onRvRefreshAndLoadMoreListener.onRefresh();
     }
 
     @Override
     public void onLoad() {
+        setRefreshing(false);
         if (onRvRefreshAndLoadMoreListener != null)
             onRvRefreshAndLoadMoreListener.onLoad();
     }
