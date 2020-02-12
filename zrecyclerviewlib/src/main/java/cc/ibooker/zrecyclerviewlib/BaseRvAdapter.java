@@ -229,7 +229,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
                 mList.remove(realPosition);
             }
             notifyItemRemoved(position);
-            notifyItemRangeChanged(position, getItemCount());
+            notifyItemRangeChanged(position, getItemCount() - position);
         }
         return this;
     }

@@ -44,11 +44,15 @@ public class ZRecyclerView extends RecyclerView {
 
     // 初始化
     private void init(Context context) {
-        this.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+        this.setLayoutManager(new ZLinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
     }
 
     @Override
     public void setLayoutManager(@Nullable LayoutManager layout) {
+        if (layout instanceof LinearLayoutManager) {
+            LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layout;
+            layout = new LinearLayoutManager(getContext(), linearLayoutManager.getOrientation(), linearLayoutManager.getReverseLayout());
+        }
         layoutManager = layout;
         super.setLayoutManager(layoutManager);
     }
