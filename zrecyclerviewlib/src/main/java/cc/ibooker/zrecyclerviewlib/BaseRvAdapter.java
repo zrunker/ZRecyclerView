@@ -29,7 +29,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     private ZRecyclerView zRecyclerView;
 
     // 设置ZRecyclerView
-    void attachRecyclerView(ZRecyclerView zRecyclerView) {
+    synchronized void attachRecyclerView(ZRecyclerView zRecyclerView) {
         this.zRecyclerView = zRecyclerView;
     }
 
@@ -38,14 +38,15 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
         if (zRecyclerView != null) {
             // 根据RecyclerView获得当前View的位置
             int position = zRecyclerView.getChildAdapterPosition(v);
+            int itemCount = getItemCount();
             // 执行点击事件
             if (position == 0 && rvHeadView != null) {
                 if (rvHeadViewClickListener != null)
                     rvHeadViewClickListener.onRvHeadViewClick(v);
-            } else if (position == getItemCount() - 1 && rvFooterView != null) {
+            } else if (position == itemCount - 1 && rvFooterView != null) {
                 if (rvFooterViewClickListener != null)
                     rvFooterViewClickListener.onRvFooterViewClick(v);
-            } else if (position >= 0 && position < getItemCount()) {
+            } else if (position >= 0 && position < itemCount) {
                 if (rvItemClickListener != null)
                     rvItemClickListener.onRvItemClick(v, position, getRealListPosition(position));
             }
@@ -65,22 +66,22 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     }
 
     // 设置单项点击监听
-    public void setRvItemClickListener(RvItemClickListener rvItemClickListener) {
+    public synchronized void setRvItemClickListener(RvItemClickListener rvItemClickListener) {
         this.rvItemClickListener = rvItemClickListener;
     }
 
     // 设置头部点击监听
-    public void setRvHeadViewClickListener(RvHeadViewClickListener rvHeadViewClickListener) {
+    public synchronized void setRvHeadViewClickListener(RvHeadViewClickListener rvHeadViewClickListener) {
         this.rvHeadViewClickListener = rvHeadViewClickListener;
     }
 
     // 设置底部点击监听
-    public void setRvFooterViewClickListener(RvFooterViewClickListener rvFooterViewClickListener) {
+    public synchronized void setRvFooterViewClickListener(RvFooterViewClickListener rvFooterViewClickListener) {
         this.rvFooterViewClickListener = rvFooterViewClickListener;
     }
 
     // 设置单项长按监听
-    public void setRvItemLongClickListener(RvItemLongClickListener rvItemLongClickListener) {
+    public synchronized void setRvItemLongClickListener(RvItemLongClickListener rvItemLongClickListener) {
         this.rvItemLongClickListener = rvItemLongClickListener;
     }
 
@@ -102,7 +103,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
      *
      * @param rvEmptyView 待添加View
      */
-    public BaseRvAdapter addRvEmptyView(BaseRvEmptyView rvEmptyView) {
+    public synchronized BaseRvAdapter addRvEmptyView(BaseRvEmptyView rvEmptyView) {
         this.rvEmptyView = rvEmptyView;
         return this;
     }
@@ -112,7 +113,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
      *
      * @param rvFooterView 待添加View
      */
-    public BaseRvAdapter addRvFooterView(BaseRvFooterView rvFooterView) {
+    public synchronized BaseRvAdapter addRvFooterView(BaseRvFooterView rvFooterView) {
         this.rvFooterView = rvFooterView;
         return this;
     }
@@ -122,7 +123,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
      *
      * @param rvHeadView 待添加View
      */
-    public BaseRvAdapter addRvHeadView(BaseRvHeadView rvHeadView) {
+    public synchronized BaseRvAdapter addRvHeadView(BaseRvHeadView rvHeadView) {
         this.rvHeadView = rvHeadView;
         return this;
     }
@@ -130,7 +131,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     /**
      * 刷新空界面View
      */
-    public BaseRvAdapter updateRvEmptyView() {
+    public synchronized BaseRvAdapter updateRvEmptyView() {
         if (rvEmptyView != null) {
             rvEmptyView.refreshEmptyView(rvEmptyView.getEmptyData());
             this.notifyDataSetChanged();
@@ -141,7 +142,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     /**
      * 刷新底部View
      */
-    public BaseRvAdapter updateRvFooterView() {
+    public synchronized BaseRvAdapter updateRvFooterView() {
         if (rvFooterView != null) {
             rvFooterView.refreshFooterView(rvFooterView.getFooterData());
         }
@@ -151,7 +152,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     /**
      * 刷新头部View
      */
-    public BaseRvAdapter updateRvHeadView() {
+    public synchronized BaseRvAdapter updateRvHeadView() {
         if (rvHeadView != null) {
             rvHeadView.refreshHeadView(rvHeadView.getHeadData());
         }
@@ -159,7 +160,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     }
 
     // 设置数据
-    public BaseRvAdapter setData(List<T> list) {
+    public synchronized BaseRvAdapter setData(List<T> list) {
         this.mList = list;
         return this;
     }
@@ -174,7 +175,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
      *
      * @param list 待刷新数据
      */
-    public BaseRvAdapter refreshData(ArrayList<T> list) {
+    public synchronized BaseRvAdapter refreshData(ArrayList<T> list) {
         this.mList = list;
         this.notifyDataSetChanged();
         return this;
@@ -186,7 +187,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
      * @param positionStart 开始项
      * @param itemCount     刷新项数
      */
-    public BaseRvAdapter updateItems(int positionStart, int itemCount) {
+    public synchronized BaseRvAdapter updateItems(int positionStart, int itemCount) {
         if (itemCount > 0)
             this.notifyItemRangeChanged(positionStart, itemCount);
         return this;
@@ -197,7 +198,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
      *
      * @param position 待刷新的项
      */
-    public BaseRvAdapter updateItem(int position) {
+    public synchronized BaseRvAdapter updateItem(int position) {
         this.notifyItemRangeChanged(position, 1);
         return this;
     }
@@ -208,7 +209,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
      * @param positionStart 开始项
      * @param itemCount     移除项数
      */
-    public BaseRvAdapter removeItems(int positionStart, int itemCount) {
+    public synchronized BaseRvAdapter removeItems(int positionStart, int itemCount) {
         for (int i = 0; i < itemCount; i++) {
             positionStart++;
             removeItem(positionStart);
@@ -221,15 +222,21 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
      *
      * @param position 待移除的项
      */
-    public BaseRvAdapter removeItem(int position) {
-        if (position >= 0 && position < getItemCount()) {
-            int realPosition = getRealListPosition(position);
-            if (mList != null && mList.size() > 0
-                    && realPosition >= 0 && realPosition < mList.size()) {
-                mList.remove(realPosition);
+    public synchronized BaseRvAdapter removeItem(int position) {
+        try {
+            int itemCount = getItemCount();
+            if (position >= 0 && position < itemCount) {
+                int realPosition = getRealListPosition(position);
+                if (mList != null && mList.size() > 0
+                        && realPosition >= 0 && realPosition < mList.size()) {
+                    mList.remove(realPosition);
+                }
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, itemCount - position);
             }
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, getItemCount() - position);
+        } catch (Exception e) {
+            if (mList != null)
+                refreshData((ArrayList<T>) mList);
         }
         return this;
     }
@@ -311,6 +318,14 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
      * @param position 原位置
      */
     private int getRealListPosition(int position) {
-        return rvHeadView != null ? position - 1 : position;
+        int realPosition;
+        if (mList == null || mList.size() <= 0)
+            realPosition = -1;
+        else {
+            realPosition = rvHeadView != null ? position - 1 : position;
+            if (realPosition >= mList.size())
+                realPosition = -1;
+        }
+        return realPosition;
     }
 }
