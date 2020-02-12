@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHolder>
         implements View.OnClickListener, View.OnLongClickListener {
-    private List<T> mList = new ArrayList<>();
+    private List<T> mList = Collections.synchronizedList(new ArrayList<T>());
     private RvItemClickListener rvItemClickListener;
     private RvFooterViewClickListener rvFooterViewClickListener;
     private RvItemLongClickListener rvItemLongClickListener;
@@ -209,6 +210,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
      * @param positionStart 开始项
      * @param itemCount     移除项数
      */
+    @Deprecated
     public synchronized BaseRvAdapter removeItems(int positionStart, int itemCount) {
         for (int i = 0; i < itemCount; i++) {
             positionStart++;
@@ -218,10 +220,25 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     }
 
     /**
+     * 局部移除 - 多项
+     *
+     * @param positionStart 开始项
+     * @param itemCount     移除项数
+     */
+    public synchronized BaseRvAdapter removeItems2(int positionStart, int itemCount) {
+        for (int i = 0; i < itemCount; i++) {
+            positionStart++;
+            removeItem2(positionStart);
+        }
+        return this;
+    }
+
+    /**
      * 局部移除 - 单项
      *
      * @param position 待移除的项
      */
+    @Deprecated
     public synchronized BaseRvAdapter removeItem(int position) {
         try {
             int itemCount = getItemCount();
@@ -237,6 +254,24 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
         } catch (Exception e) {
             if (mList != null)
                 refreshData((ArrayList<T>) mList);
+        }
+        return this;
+    }
+
+    /**
+     * 局部移除 - 单项
+     *
+     * @param position 待移除的项
+     */
+    public synchronized BaseRvAdapter removeItem2(int position) {
+        int itemCount = getItemCount();
+        if (position >= 0 && position < itemCount) {
+            int realPosition = getRealListPosition(position);
+            if (mList != null && mList.size() > 0
+                    && realPosition >= 0 && realPosition < mList.size()) {
+                mList.remove(realPosition);
+            }
+            notifyDataSetChanged();
         }
         return this;
     }
