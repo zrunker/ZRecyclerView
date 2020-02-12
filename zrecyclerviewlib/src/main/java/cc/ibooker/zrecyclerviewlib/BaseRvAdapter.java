@@ -222,11 +222,14 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
      * @param position 待移除的项
      */
     public BaseRvAdapter removeItem(int position) {
-        if (mList != null && mList.size() > 0
-                && position >= 0 && position < mList.size()) {
-            mList.remove(position);
+        if (position >= 0 && position < getItemCount()) {
+            int realPosition = getRealListPosition(position);
+            if (mList != null && mList.size() > 0
+                    && realPosition >= 0 && realPosition < mList.size()) {
+                mList.remove(realPosition);
+            }
             notifyItemRemoved(position);
-            notifyItemRangeChanged(position, mList.size());
+            notifyItemRangeChanged(position, getItemCount());
         }
         return this;
     }
