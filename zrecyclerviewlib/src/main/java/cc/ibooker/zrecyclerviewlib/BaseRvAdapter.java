@@ -21,6 +21,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     private RvFooterViewClickListener rvFooterViewClickListener;
     private RvItemLongClickListener rvItemLongClickListener;
     private RvHeadViewClickListener rvHeadViewClickListener;
+    private RvEmptyViewClickListener rvEmptyViewClickListener;
     private final int TYPE_FOOTER = Integer.MIN_VALUE;
     private final int TYPE_EMPTY = TYPE_FOOTER + 1;
     private final int TYPE_HEARD = TYPE_EMPTY + 1;
@@ -40,17 +41,38 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
             // 根据RecyclerView获得当前View的位置
             int position = zRecyclerView.getChildAdapterPosition(v);
             int itemCount = getItemCount();
-            // 执行点击事件
-            if (position == 0 && rvHeadView != null) {
-                if (rvHeadViewClickListener != null)
-                    rvHeadViewClickListener.onRvHeadViewClick(v);
-            } else if (position == itemCount - 1 && rvFooterView != null) {
-                if (rvFooterViewClickListener != null)
-                    rvFooterViewClickListener.onRvFooterViewClick(v);
-            } else if (position >= 0 && position < itemCount) {
-                if (rvItemClickListener != null)
-                    rvItemClickListener.onRvItemClick(v, position, getRealListPosition(position));
+            int viewType = getItemViewType(position);
+            switch (viewType) {
+                case TYPE_FOOTER:
+                    if (rvFooterViewClickListener != null)
+                        rvFooterViewClickListener.onRvFooterViewClick(v);
+                    break;
+                case TYPE_EMPTY:
+                    if (rvEmptyViewClickListener != null)
+                        rvEmptyViewClickListener.onRvEmptyViewClick(v);
+                    break;
+                case TYPE_HEARD:
+                    if (rvHeadViewClickListener != null)
+                        rvHeadViewClickListener.onRvHeadViewClick(v);
+                    break;
+                default:
+                    if (position >= 0 && position < itemCount)
+                        if (rvItemClickListener != null)
+                            rvItemClickListener.onRvItemClick(v, position, getRealListPosition(position));
+                    break;
             }
+
+//            // 执行点击事件
+//            if (position == 0 && rvHeadView != null) {
+//                if (rvHeadViewClickListener != null)
+//                    rvHeadViewClickListener.onRvHeadViewClick(v);
+//            } else if (position == itemCount - 1 && rvFooterView != null) {
+//                if (rvFooterViewClickListener != null)
+//                    rvFooterViewClickListener.onRvFooterViewClick(v);
+//            } else if (position >= 0 && position < itemCount) {
+//                if (rvItemClickListener != null)
+//                    rvItemClickListener.onRvItemClick(v, position, getRealListPosition(position));
+//            }
         }
     }
 
@@ -79,6 +101,11 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     // 设置底部点击监听
     public synchronized void setRvFooterViewClickListener(RvFooterViewClickListener rvFooterViewClickListener) {
         this.rvFooterViewClickListener = rvFooterViewClickListener;
+    }
+
+    // 设置空页面点击监听
+    public synchronized void setRvEmptyViewClickListener(RvEmptyViewClickListener rvEmptyViewClickListener) {
+        this.rvEmptyViewClickListener = rvEmptyViewClickListener;
     }
 
     // 设置单项长按监听

@@ -27,6 +27,7 @@ public class ZRecyclerView extends RecyclerView {
     private RvItemLongClickListener rvItemLongClickListener;
     private RvFooterViewClickListener rvFooterViewClickListener;
     private RvHeadViewClickListener rvHeadViewClickListener;
+    private RvEmptyViewClickListener rvEmptyViewClickListener;
     private LayoutManager layoutManager;
 
     public ZRecyclerView(@NonNull Context context) {
@@ -105,6 +106,14 @@ public class ZRecyclerView extends RecyclerView {
         this.rvHeadViewClickListener = rvHeadViewClickListener;
         if (rvAdapter != null)
             rvAdapter.setRvHeadViewClickListener(rvHeadViewClickListener);
+        return this;
+    }
+
+    // 设置空页面点击监听
+    public ZRecyclerView setRvEmptyViewClickListener(RvEmptyViewClickListener rvEmptyViewClickListener) {
+        this.rvEmptyViewClickListener = rvEmptyViewClickListener;
+        if (rvAdapter != null)
+            rvAdapter.setRvEmptyViewClickListener(rvEmptyViewClickListener);
         return this;
     }
 

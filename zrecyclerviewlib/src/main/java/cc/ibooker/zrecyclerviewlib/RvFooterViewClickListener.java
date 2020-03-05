@@ -3,7 +3,7 @@ package cc.ibooker.zrecyclerviewlib;
 import android.view.View;
 
 /**
- * RecyclerView底部监听
+ * RecyclerView底部点击监听
  *
  * @author 邹峰立
  */

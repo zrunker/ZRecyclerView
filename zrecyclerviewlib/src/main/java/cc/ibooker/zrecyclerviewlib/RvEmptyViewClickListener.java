@@ -3,16 +3,16 @@ package cc.ibooker.zrecyclerviewlib;
 import android.view.View;
 
 /**
- * RecyclerView头部点击监听
+ * RecyclerView空页面点击监听
  *
  * @author 邹峰立
  */
-public interface RvHeadViewClickListener {
+public interface RvEmptyViewClickListener {
 
     /**
-     * 设置点击头部监听
+     * 设置点击空页面监听
      *
      * @param view 被点击的View
      */
-    void onRvHeadViewClick(View view);
+    void onRvEmptyViewClick(View view);
 }
