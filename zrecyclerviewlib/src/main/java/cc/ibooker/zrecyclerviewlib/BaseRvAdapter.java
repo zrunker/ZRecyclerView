@@ -311,6 +311,8 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
                 rvFooterView.getFooterView().setOnClickListener(this);
             return new BaseViewHolder<>(rvFooterView.getFooterView());
         } else if (viewType == TYPE_EMPTY) {
+            if (rvEmptyView.getEmptyView() != null)
+                rvEmptyView.getEmptyView().setOnClickListener(this);
             return new BaseViewHolder(rvEmptyView.getEmptyView());
         } else if (viewType == TYPE_HEARD) {
             if (rvHeadView.getHeadView() != null)
