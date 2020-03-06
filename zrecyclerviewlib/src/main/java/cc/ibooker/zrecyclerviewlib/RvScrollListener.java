@@ -128,8 +128,8 @@ public class RvScrollListener extends RecyclerView.OnScrollListener {
                  * 加载更多 事件
                  */
                 if (!isLoadingMore && onLoadListener != null) {
-                    onLoadListener.onLoad();
                     isLoadingMore = true;
+                    onLoadListener.onLoad();
                 }
             }
 
