@@ -64,6 +64,13 @@ public class ZRecyclerView extends RecyclerView {
         return layoutManager;
     }
 
+    public boolean isMoreLoading() {
+        boolean isMoreLoading = false;
+        if (rvScrollListener != null)
+            isMoreLoading = rvScrollListener.isLoadingMore();
+        return isMoreLoading;
+    }
+
     // 设置是否加载更多
     public void setLoading(boolean bool) {
         if (rvScrollListener != null)
@@ -214,6 +221,8 @@ public class ZRecyclerView extends RecyclerView {
             rvAdapter.setRvHeadViewClickListener(rvHeadViewClickListener);
         if (rvItemLongClickListener != null)
             rvAdapter.setRvItemLongClickListener(rvItemLongClickListener);
+        if (rvEmptyViewClickListener != null)
+            rvAdapter.setRvEmptyViewClickListener(rvEmptyViewClickListener);
         rvAdapter.attachRecyclerView(this);
         super.setAdapter(adapter);
         return this;
