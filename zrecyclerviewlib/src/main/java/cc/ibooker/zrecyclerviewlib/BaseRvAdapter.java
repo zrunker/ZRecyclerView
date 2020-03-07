@@ -381,7 +381,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
      *
      * @param position 原位置
      */
-    private int getRealListPosition(int position) {
+    public int getRealListPosition(int position) {
         int realPosition;
         if (mList == null || mList.size() <= 0)
             realPosition = -1;
@@ -391,5 +391,14 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
                 realPosition = -1;
         }
         return realPosition;
+    }
+
+    /**
+     * 获取数据集总数
+     */
+    private int getDataSize() {
+        if (getData() == null)
+            return 0;
+        return getData().size();
     }
 }
