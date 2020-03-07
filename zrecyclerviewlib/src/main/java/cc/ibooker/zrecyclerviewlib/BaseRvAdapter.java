@@ -396,7 +396,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     /**
      * 获取数据集总数
      */
-    private int getDataSize() {
+    public int getDataSize() {
         if (getData() == null)
             return 0;
         return getData().size();
