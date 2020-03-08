@@ -245,4 +245,47 @@ public class ZRecyclerView extends RecyclerView {
         }
     }
 
+    /**
+     * RecyclerView 移动到指定位置，
+     *
+     * @param position 要跳转的位置
+     */
+    private void moveToPosition(int position) {
+        if (layoutManager instanceof LinearLayoutManager) {
+            LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
+            int firstItem = linearLayoutManager.findFirstVisibleItemPosition();
+            int lastItem = linearLayoutManager.findLastVisibleItemPosition();
+            if (position <= firstItem) {
+                this.scrollToPosition(position);
+            } else if (position <= lastItem) {
+                int top = this.getChildAt(position - firstItem).getTop();
+                this.scrollBy(0, top);
+            } else {
+                this.scrollToPosition(position);
+            }
+        } else
+            this.scrollToPosition(position);
+    }
+
+    /**
+     * RecyclerView 缓慢移动到指定位置，
+     *
+     * @param position 要跳转的位置
+     */
+    private void smoothMoveToPosition(int position) {
+        if (layoutManager instanceof LinearLayoutManager) {
+            LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
+            int firstItem = linearLayoutManager.findFirstVisibleItemPosition();
+            int lastItem = linearLayoutManager.findLastVisibleItemPosition();
+            if (position <= firstItem) {
+                this.scrollToPosition(position);
+            } else if (position <= lastItem) {
+                int top = this.getChildAt(position - firstItem).getTop();
+                this.smoothScrollBy(0, top);
+            } else {
+                this.smoothScrollToPosition(position);
+            }
+        } else
+            this.smoothScrollToPosition(position);
+    }
 }
