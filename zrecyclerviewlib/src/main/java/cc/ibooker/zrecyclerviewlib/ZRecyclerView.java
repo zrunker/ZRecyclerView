@@ -250,7 +250,7 @@ public class ZRecyclerView extends RecyclerView {
      *
      * @param position 要跳转的位置
      */
-    private void moveToPosition(int position) {
+    public void moveToPosition(int position) {
         if (layoutManager instanceof LinearLayoutManager) {
             LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
             int firstItem = linearLayoutManager.findFirstVisibleItemPosition();
@@ -272,7 +272,7 @@ public class ZRecyclerView extends RecyclerView {
      *
      * @param position 要跳转的位置
      */
-    private void smoothMoveToPosition(int position) {
+    public void smoothMoveToPosition(int position) {
         if (layoutManager instanceof LinearLayoutManager) {
             LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
             int firstItem = linearLayoutManager.findFirstVisibleItemPosition();
