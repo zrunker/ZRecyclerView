@@ -35,6 +35,10 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
         this.zRecyclerView = zRecyclerView;
     }
 
+    public ZRecyclerView getRecyclerView() {
+        return zRecyclerView;
+    }
+
     @Override
     public void onClick(View v) {
         if (zRecyclerView != null) {

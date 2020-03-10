@@ -3,6 +3,7 @@ package cc.ibooker.zrecyclerviewlib;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -50,7 +51,7 @@ public class ZRecyclerView extends RecyclerView {
 
     @Override
     public void setLayoutManager(@Nullable LayoutManager layout) {
-        if (layout instanceof LinearLayoutManager) {
+        if (layout instanceof LinearLayoutManager && !(layout instanceof GridLayoutManager)) {
             LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layout;
             layout = new LinearLayoutManager(getContext(), linearLayoutManager.getOrientation(), linearLayoutManager.getReverseLayout());
         }
