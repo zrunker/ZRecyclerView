@@ -22,9 +22,9 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     private RvItemLongClickListener rvItemLongClickListener;
     private RvHeadViewClickListener rvHeadViewClickListener;
     private RvEmptyViewClickListener rvEmptyViewClickListener;
-    private final int TYPE_FOOTER = Integer.MIN_VALUE;
-    private final int TYPE_EMPTY = TYPE_FOOTER + 1;
-    private final int TYPE_HEARD = TYPE_EMPTY + 1;
+    public final int TYPE_FOOTER = Integer.MIN_VALUE;
+    public final int TYPE_EMPTY = TYPE_FOOTER + 1;
+    public final int TYPE_HEARD = TYPE_EMPTY + 1;
     private BaseRvFooterView rvFooterView;// 底部View
     private BaseRvEmptyView rvEmptyView;// 空页面
     private BaseRvHeadView rvHeadView;// 头部View
