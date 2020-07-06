@@ -3,6 +3,7 @@ package cc.ibooker.zrecyclerviewlib;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -27,6 +28,7 @@ public class ZRecyclerView extends RecyclerView {
     private RvItemLongClickListener rvItemLongClickListener;
     private RvFooterViewClickListener rvFooterViewClickListener;
     private RvHeadViewClickListener rvHeadViewClickListener;
+    private RvEmptyViewClickListener rvEmptyViewClickListener;
     private LayoutManager layoutManager;
 
     public ZRecyclerView(@NonNull Context context) {
@@ -44,11 +46,15 @@ public class ZRecyclerView extends RecyclerView {
 
     // 初始化
     private void init(Context context) {
-        this.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+        this.setLayoutManager(new ZLinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
     }
 
     @Override
     public void setLayoutManager(@Nullable LayoutManager layout) {
+        if (layout instanceof LinearLayoutManager && !(layout instanceof GridLayoutManager)) {
+            LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layout;
+            layout = new LinearLayoutManager(getContext(), linearLayoutManager.getOrientation(), linearLayoutManager.getReverseLayout());
+        }
         layoutManager = layout;
         super.setLayoutManager(layoutManager);
     }
@@ -57,6 +63,13 @@ public class ZRecyclerView extends RecyclerView {
     @Override
     public LayoutManager getLayoutManager() {
         return layoutManager;
+    }
+
+    public boolean isMoreLoading() {
+        boolean isMoreLoading = false;
+        if (rvScrollListener != null)
+            isMoreLoading = rvScrollListener.isLoadingMore();
+        return isMoreLoading;
     }
 
     // 设置是否加载更多
@@ -101,6 +114,14 @@ public class ZRecyclerView extends RecyclerView {
         this.rvHeadViewClickListener = rvHeadViewClickListener;
         if (rvAdapter != null)
             rvAdapter.setRvHeadViewClickListener(rvHeadViewClickListener);
+        return this;
+    }
+
+    // 设置空页面点击监听
+    public ZRecyclerView setRvEmptyViewClickListener(RvEmptyViewClickListener rvEmptyViewClickListener) {
+        this.rvEmptyViewClickListener = rvEmptyViewClickListener;
+        if (rvAdapter != null)
+            rvAdapter.setRvEmptyViewClickListener(rvEmptyViewClickListener);
         return this;
     }
 
@@ -201,6 +222,8 @@ public class ZRecyclerView extends RecyclerView {
             rvAdapter.setRvHeadViewClickListener(rvHeadViewClickListener);
         if (rvItemLongClickListener != null)
             rvAdapter.setRvItemLongClickListener(rvItemLongClickListener);
+        if (rvEmptyViewClickListener != null)
+            rvAdapter.setRvEmptyViewClickListener(rvEmptyViewClickListener);
         rvAdapter.attachRecyclerView(this);
         super.setAdapter(adapter);
         return this;
@@ -223,4 +246,47 @@ public class ZRecyclerView extends RecyclerView {
         }
     }
 
+    /**
+     * RecyclerView 移动到指定位置，
+     *
+     * @param position 要跳转的位置
+     */
+    public void moveToPosition(int position) {
+        if (layoutManager instanceof LinearLayoutManager) {
+            LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
+            int firstItem = linearLayoutManager.findFirstVisibleItemPosition();
+            int lastItem = linearLayoutManager.findLastVisibleItemPosition();
+            if (position <= firstItem) {
+                this.scrollToPosition(position);
+            } else if (position <= lastItem) {
+                int top = this.getChildAt(position - firstItem).getTop();
+                this.scrollBy(0, top);
+            } else {
+                this.scrollToPosition(position);
+            }
+        } else
+            this.scrollToPosition(position);
+    }
+
+    /**
+     * RecyclerView 缓慢移动到指定位置，
+     *
+     * @param position 要跳转的位置
+     */
+    public void smoothMoveToPosition(int position) {
+        if (layoutManager instanceof LinearLayoutManager) {
+            LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
+            int firstItem = linearLayoutManager.findFirstVisibleItemPosition();
+            int lastItem = linearLayoutManager.findLastVisibleItemPosition();
+            if (position <= firstItem) {
+                this.scrollToPosition(position);
+            } else if (position <= lastItem) {
+                int top = this.getChildAt(position - firstItem).getTop();
+                this.smoothScrollBy(0, top);
+            } else {
+                this.smoothScrollToPosition(position);
+            }
+        } else
+            this.smoothScrollToPosition(position);
+    }
 }

@@ -51,7 +51,7 @@ public class RvFooterView extends BaseRvFooterView<FooterData> {
                 break;
             case STATUE_LOADED:// 加载完成
                 footerData.setShowFooter(true);
-                footerData.setShowProgressBar(true);
+                footerData.setShowProgressBar(false);
                 footerData.setTitle(getContext().getResources().getString(R.string.load_more_complete));
                 refreshView();
                 break;
