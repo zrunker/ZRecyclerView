@@ -435,7 +435,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
                     int viewType = getItemViewType(position);
                     return (viewType == TYPE_FOOTER
                             || viewType == TYPE_EMPTY
-                            || viewType == TYPE_HEARD) ? 1 : gridLM.getSpanCount();
+                            || viewType == TYPE_HEARD) ? gridLM.getSpanCount() : 1;
                 }
             });
         }
