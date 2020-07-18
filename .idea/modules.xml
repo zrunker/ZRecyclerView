@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ZRecyclerView.iml" filepath="$PROJECT_DIR$/ZRecyclerView.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/zrecyclerviewlib/zrecyclerviewlib.iml" filepath="$PROJECT_DIR$/zrecyclerviewlib/zrecyclerviewlib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ZRecyclerView.iml" filepath="$PROJECT_DIR$/ZRecyclerView.iml" group="ZRecyclerView" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="ZRecyclerView/app" />
+      <module fileurl="file://$PROJECT_DIR$/zrecyclerviewlib/zrecyclerviewlib.iml" filepath="$PROJECT_DIR$/zrecyclerviewlib/zrecyclerviewlib.iml" group="ZRecyclerView/zrecyclerviewlib" />
     </modules>
   </component>
 </project>

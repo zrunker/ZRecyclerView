@@ -1,7 +1,9 @@
 package cc.ibooker.zrecyclerviewlib;
 
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -404,5 +406,38 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
         if (getData() == null)
             return 0;
         return getData().size();
+    }
+
+    @Override
+    public void onViewAttachedToWindow(@NonNull BaseViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        int viewType = holder.getItemViewType();
+        if (viewType == TYPE_FOOTER
+                || viewType == TYPE_EMPTY
+                || viewType == TYPE_HEARD) {
+            ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
+            if (lp instanceof StaggeredGridLayoutManager.LayoutParams) {
+                StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
+                p.setFullSpan(true);
+            }
+        }
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+        if (manager instanceof GridLayoutManager) {
+            final GridLayoutManager gridLM = (GridLayoutManager) manager;
+            gridLM.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    int viewType = getItemViewType(position);
+                    return (viewType == TYPE_FOOTER
+                            || viewType == TYPE_EMPTY
+                            || viewType == TYPE_HEARD) ? 1 : gridLM.getSpanCount();
+                }
+            });
+        }
     }
 }
