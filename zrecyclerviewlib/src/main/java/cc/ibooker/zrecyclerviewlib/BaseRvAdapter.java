@@ -423,21 +423,21 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
         }
     }
 
-    @Override
-    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
-        if (manager instanceof GridLayoutManager) {
-            final GridLayoutManager gridLM = (GridLayoutManager) manager;
-            gridLM.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                @Override
-                public int getSpanSize(int position) {
-                    int viewType = getItemViewType(position);
-                    return (viewType == TYPE_FOOTER
-                            || viewType == TYPE_EMPTY
-                            || viewType == TYPE_HEARD) ? gridLM.getSpanCount() : 1;
-                }
-            });
-        }
-    }
+//    @Override
+//    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+//        super.onAttachedToRecyclerView(recyclerView);
+//        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+//        if (manager instanceof GridLayoutManager) {
+//            final GridLayoutManager gridLM = (GridLayoutManager) manager;
+//            gridLM.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+//                @Override
+//                public int getSpanSize(int position) {
+//                    int viewType = getItemViewType(position);
+//                    return (viewType == TYPE_FOOTER
+//                            || viewType == TYPE_EMPTY
+//                            || viewType == TYPE_HEARD) ? gridLM.getSpanCount() : 1;
+//                }
+//            });
+//        }
+//    }
 }
