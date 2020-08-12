@@ -1,5 +1,6 @@
 package cc.ibooker.zrecyclerviewlib;
 
+import android.support.annotation.NonNull;
 import android.view.View;
 
 /**
@@ -15,5 +16,5 @@ public interface RvItemCViewClickListener {
      * @param position     被点击项
      * @param realPosition 数据列表位置
      */
-    void onRvItemCViewClick(View view, int position, int realPosition);
+    void onRvItemCViewClick(@NonNull View view, int position, int realPosition);
 }

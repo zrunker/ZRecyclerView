@@ -1,5 +1,6 @@
 package cc.ibooker.zrecyclerviewlib;
 
+import android.support.annotation.NonNull;
 import android.view.View;
 
 /**
@@ -14,5 +15,5 @@ public interface RvHeadViewClickListener {
      *
      * @param view 被点击的View
      */
-    void onRvHeadViewClick(View view);
+    void onRvHeadViewClick(@NonNull View view);
 }

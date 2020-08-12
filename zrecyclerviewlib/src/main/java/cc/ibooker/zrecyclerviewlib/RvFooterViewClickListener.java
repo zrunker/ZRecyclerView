@@ -1,5 +1,6 @@
 package cc.ibooker.zrecyclerviewlib;
 
+import android.support.annotation.NonNull;
 import android.view.View;
 
 /**
@@ -14,5 +15,5 @@ public interface RvFooterViewClickListener {
      *
      * @param view 被点击的View
      */
-    void onRvFooterViewClick(View view);
+    void onRvFooterViewClick(@NonNull View view);
 }
