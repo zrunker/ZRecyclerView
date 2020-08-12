@@ -337,7 +337,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
                 itemView.setOnClickListener(this);
                 itemView.setOnLongClickListener(this);
                 // 监听子View操作事件
-                setItemCViewsClick(itemView, viewGroup);
+                setItemCViewsClick(itemView, itemView);
             }
             return baseViewHolder;
         }
@@ -453,7 +453,8 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     // 获取View中所有子控件并设置点击事件
     private void setItemCViewsClick(View view, @NonNull View parentView) {
         if (view != null) {
-            setViewClick(view, parentView);
+            if (rvItemClickListener == null || view != parentView)
+                setViewClick(view, parentView);
             if (view instanceof ViewGroup) {
                 ViewGroup viewGroup = (ViewGroup) view;
                 for (int i = 0; i < viewGroup.getChildCount(); i++) {

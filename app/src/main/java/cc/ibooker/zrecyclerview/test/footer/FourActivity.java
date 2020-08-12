@@ -17,6 +17,7 @@ import cc.ibooker.zrecyclerview.test.ThreeBean;
 import cc.ibooker.zrecyclerview.test.ThreeRvAdapter;
 import cc.ibooker.zrecyclerviewlib.RvFooterViewClickListener;
 import cc.ibooker.zrecyclerviewlib.RvHeadViewClickListener;
+import cc.ibooker.zrecyclerviewlib.RvItemCViewClickListener;
 import cc.ibooker.zrecyclerviewlib.RvItemClickListener;
 import cc.ibooker.zrecyclerviewlib.RvItemLongClickListener;
 import cc.ibooker.zrecyclerviewlib.RvScrollListener;
@@ -75,6 +76,11 @@ public class FourActivity extends Activity implements SwipeRefreshLayout.OnRefre
             @Override
             public void onRvItemLongClick(@NonNull View view, int position, int realPosition) {
                 Toast.makeText(FourActivity.this, "长按position：" + position + " 点击数据列表position：" + realPosition, Toast.LENGTH_SHORT).show();
+            }
+        }).setRvItemCViewClickListener(new RvItemCViewClickListener() {
+            @Override
+            public void onRvItemCViewClick(@NonNull View view, int position, int realPosition) {
+                Toast.makeText(FourActivity.this, "点击" + view.getId(), Toast.LENGTH_SHORT).show();
             }
         });
 
