@@ -333,4 +333,15 @@ public class ZRecyclerView extends RecyclerView {
         } else
             this.smoothScrollToPosition(position);
     }
+
+    /**
+     * 获取列表真实位置
+     *
+     * @param position 原位置
+     */
+    public int getRealListPosition(int position) {
+        if (rvAdapter != null)
+            return rvAdapter.getRealListPosition(position);
+        return 0;
+    }
 }
