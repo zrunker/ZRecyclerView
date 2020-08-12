@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 /**
- * RecycleView单项长按事件
+ * 监听RecycleView单项长按事件
  *
  * @author 邹峰立
  */

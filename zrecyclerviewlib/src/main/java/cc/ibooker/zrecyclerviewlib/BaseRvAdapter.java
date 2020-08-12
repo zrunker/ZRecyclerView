@@ -334,10 +334,13 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
             BaseViewHolder baseViewHolder = onCreateItemViewHolder(viewGroup, viewType);
             final View itemView = baseViewHolder.getItemView();
             if (itemView != null) {
-                itemView.setOnClickListener(this);
-                itemView.setOnLongClickListener(this);
+                if (rvItemClickListener != null)
+                    itemView.setOnClickListener(this);
+                if (rvItemLongClickListener != null)
+                    itemView.setOnLongClickListener(this);
                 // 监听子View操作事件
-                setItemCViewsClick(itemView, itemView);
+                if (rvItemCViewClickListener != null || rvItemLongCViewClickListener != null)
+                    setItemCViewsClick(itemView, itemView);
             }
             return baseViewHolder;
         }
