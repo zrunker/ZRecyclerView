@@ -31,6 +31,8 @@ public class ZRecyclerView extends RecyclerView {
     private RvEmptyViewClickListener rvEmptyViewClickListener;
     private RvItemCViewClickListener rvItemCViewClickListener;
     private RvItemLongCViewClickListener rvItemLongCViewClickListener;
+    private RvItemDiyCViewClickListener rvItemDiyCViewClickListener;
+    private RvItemDiyLongCViewClickListener rvItemDiyLongCViewClickListener;
     private LayoutManager layoutManager;
 
     public ZRecyclerView(@NonNull Context context) {
@@ -143,6 +145,22 @@ public class ZRecyclerView extends RecyclerView {
         return this;
     }
 
+    // 自定义监听单项点击事件
+    public ZRecyclerView regRvItemDiyCViewClickListener(RvItemDiyCViewClickListener rvItemDiyCViewClickListener) {
+        this.rvItemDiyCViewClickListener = rvItemDiyCViewClickListener;
+        if (rvAdapter != null)
+            rvAdapter.regRvItemDiyCViewClickListener(rvItemDiyCViewClickListener);
+        return this;
+    }
+
+    // 自定义监听单项长按事件
+    public ZRecyclerView regRvItemLongDiyCViewClickListener(RvItemDiyLongCViewClickListener rvItemDiyLongCViewClickListener) {
+        this.rvItemDiyLongCViewClickListener = rvItemDiyLongCViewClickListener;
+        if (rvAdapter != null)
+            rvAdapter.regRvItemLongDiyCViewClickListener(rvItemDiyLongCViewClickListener);
+        return this;
+    }
+
     /**
      * 添加空页面
      *
@@ -246,6 +264,10 @@ public class ZRecyclerView extends RecyclerView {
             rvAdapter.setRvItemCViewClickListener(rvItemCViewClickListener);
         if (rvItemLongCViewClickListener != null)
             rvAdapter.setRvItemLongCViewClickListener(rvItemLongCViewClickListener);
+        if (rvItemDiyCViewClickListener != null)
+            rvAdapter.regRvItemDiyCViewClickListener(rvItemDiyCViewClickListener);
+        if (rvItemDiyLongCViewClickListener != null)
+            rvAdapter.regRvItemLongDiyCViewClickListener(rvItemDiyLongCViewClickListener);
         rvAdapter.attachRecyclerView(this);
         super.setAdapter(adapter);
         return this;

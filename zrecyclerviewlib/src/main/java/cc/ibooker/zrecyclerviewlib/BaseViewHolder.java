@@ -11,6 +11,18 @@ import android.view.View;
 public class BaseViewHolder<V extends View, T> extends RecyclerView.ViewHolder {
     private V mItemView;
     private T mData;
+    protected RvItemDiyCViewClickListener rvItemDiyCViewClickListener;
+    protected RvItemDiyLongCViewClickListener rvItemDiyLongCViewClickListener;
+
+    public BaseViewHolder setRvItemDiyCViewClickListener(RvItemDiyCViewClickListener rvItemDiyCViewClickListener) {
+        this.rvItemDiyCViewClickListener = rvItemDiyCViewClickListener;
+        return this;
+    }
+
+    public BaseViewHolder setRvItemDiyLongCViewClickListener(RvItemDiyLongCViewClickListener rvItemDiyLongCViewClickListener) {
+        this.rvItemDiyLongCViewClickListener = rvItemDiyLongCViewClickListener;
+        return this;
+    }
 
     public BaseViewHolder(V itemView) {
         super(itemView);

@@ -25,6 +25,8 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     private RvEmptyViewClickListener rvEmptyViewClickListener;
     private RvItemCViewClickListener rvItemCViewClickListener;
     private RvItemLongCViewClickListener rvItemLongCViewClickListener;
+    private RvItemDiyCViewClickListener rvItemDiyCViewClickListener;
+    private RvItemDiyLongCViewClickListener rvItemDiyLongCViewClickListener;
     public final int TYPE_FOOTER = Integer.MIN_VALUE;
     public final int TYPE_EMPTY = TYPE_FOOTER + 1;
     public final int TYPE_HEARD = TYPE_EMPTY + 1;
@@ -122,6 +124,18 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     // 监听单项长按事件
     public synchronized BaseRvAdapter setRvItemLongCViewClickListener(RvItemLongCViewClickListener rvItemLongCViewClickListener) {
         this.rvItemLongCViewClickListener = rvItemLongCViewClickListener;
+        return this;
+    }
+
+    // 自定义监听单项点击事件
+    public synchronized BaseRvAdapter regRvItemDiyCViewClickListener(RvItemDiyCViewClickListener rvItemDiyCViewClickListener) {
+        this.rvItemDiyCViewClickListener = rvItemDiyCViewClickListener;
+        return this;
+    }
+
+    // 自定义监听单项长按事件
+    public synchronized BaseRvAdapter regRvItemLongDiyCViewClickListener(RvItemDiyLongCViewClickListener rvItemDiyLongCViewClickListener) {
+        this.rvItemDiyLongCViewClickListener = rvItemDiyLongCViewClickListener;
         return this;
     }
 
@@ -335,7 +349,11 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
             return new BaseViewHolder(headerView);
         } else {
             BaseViewHolder baseViewHolder = onCreateItemViewHolder(viewGroup, viewType);
-            final View itemView = baseViewHolder.getItemView();
+            if (rvItemDiyCViewClickListener != null)
+                baseViewHolder.setRvItemDiyCViewClickListener(rvItemDiyCViewClickListener);
+            if (rvItemDiyLongCViewClickListener != null)
+                baseViewHolder.setRvItemDiyLongCViewClickListener(rvItemDiyLongCViewClickListener);
+            View itemView = baseViewHolder.getItemView();
             if (itemView != null) {
                 if (rvItemClickListener != null)
                     itemView.setOnClickListener(this);
