@@ -350,9 +350,9 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
         } else {
             BaseViewHolder baseViewHolder = onCreateItemViewHolder(viewGroup, viewType);
             if (rvItemDiyCViewClickListener != null)
-                baseViewHolder.setRvItemDiyCViewClickListener(rvItemDiyCViewClickListener);
+                baseViewHolder.regRvItemDiyCViewClickListener(rvItemDiyCViewClickListener);
             if (rvItemDiyLongCViewClickListener != null)
-                baseViewHolder.setRvItemDiyLongCViewClickListener(rvItemDiyLongCViewClickListener);
+                baseViewHolder.regRvItemDiyLongCViewClickListener(rvItemDiyLongCViewClickListener);
             View itemView = baseViewHolder.getItemView();
             if (itemView != null) {
                 if (rvItemClickListener != null)

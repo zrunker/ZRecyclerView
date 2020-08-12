@@ -14,12 +14,12 @@ public class BaseViewHolder<V extends View, T> extends RecyclerView.ViewHolder {
     protected RvItemDiyCViewClickListener rvItemDiyCViewClickListener;
     protected RvItemDiyLongCViewClickListener rvItemDiyLongCViewClickListener;
 
-    public BaseViewHolder setRvItemDiyCViewClickListener(RvItemDiyCViewClickListener rvItemDiyCViewClickListener) {
+    public BaseViewHolder regRvItemDiyCViewClickListener(RvItemDiyCViewClickListener rvItemDiyCViewClickListener) {
         this.rvItemDiyCViewClickListener = rvItemDiyCViewClickListener;
         return this;
     }
 
-    public BaseViewHolder setRvItemDiyLongCViewClickListener(RvItemDiyLongCViewClickListener rvItemDiyLongCViewClickListener) {
+    public BaseViewHolder regRvItemDiyLongCViewClickListener(RvItemDiyLongCViewClickListener rvItemDiyLongCViewClickListener) {
         this.rvItemDiyLongCViewClickListener = rvItemDiyLongCViewClickListener;
         return this;
     }
