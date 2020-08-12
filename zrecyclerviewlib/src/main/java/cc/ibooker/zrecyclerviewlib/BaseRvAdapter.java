@@ -337,29 +337,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
                 itemView.setOnClickListener(this);
                 itemView.setOnLongClickListener(this);
                 // 监听子View操作事件
-                for (int i = 0; i < viewGroup.getChildCount(); i++) {
-                    final View view = viewGroup.getChildAt(i);
-                    view.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (rvItemCViewClickListener != null && zRecyclerView != null) {
-                                int position = zRecyclerView.getChildAdapterPosition(itemView);
-                                rvItemCViewClickListener.onRvItemCViewClick(view, position, getRealListPosition(position));
-                            }
-                        }
-                    });
-                    view.setOnLongClickListener(new View.OnLongClickListener() {
-                        @Override
-                        public boolean onLongClick(View v) {
-                            if (rvItemLongCViewClickListener != null && zRecyclerView != null) {
-                                int position = zRecyclerView.getChildAdapterPosition(itemView);
-                                rvItemLongCViewClickListener.onRvItemCViewLongClick(view, position, getRealListPosition(position));
-                                return true;
-                            }
-                            return false;
-                        }
-                    });
-                }
+                setItemCViewsClick(itemView, viewGroup);
             }
             return baseViewHolder;
         }
@@ -471,4 +449,41 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
 //            });
 //        }
 //    }
+
+    // 获取View中所有子控件并设置点击事件
+    private void setItemCViewsClick(View view, @NonNull View parentView) {
+        if (view != null) {
+            setViewClick(view, parentView);
+            if (view instanceof ViewGroup) {
+                ViewGroup viewGroup = (ViewGroup) view;
+                for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                    setItemCViewsClick(viewGroup.getChildAt(i), parentView);
+                }
+            }
+        }
+    }
+
+    // 设置View点击事件
+    private void setViewClick(@NonNull final View view, @NonNull final View parentView) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (rvItemCViewClickListener != null && zRecyclerView != null) {
+                    int position = zRecyclerView.getChildAdapterPosition(parentView);
+                    rvItemCViewClickListener.onRvItemCViewClick(view, position, getRealListPosition(position));
+                }
+            }
+        });
+        view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (rvItemLongCViewClickListener != null && zRecyclerView != null) {
+                    int position = zRecyclerView.getChildAdapterPosition(parentView);
+                    rvItemLongCViewClickListener.onRvItemCViewLongClick(view, position, getRealListPosition(position));
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
 }
