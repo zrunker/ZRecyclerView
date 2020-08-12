@@ -29,6 +29,8 @@ public class ZRecyclerView extends RecyclerView {
     private RvFooterViewClickListener rvFooterViewClickListener;
     private RvHeadViewClickListener rvHeadViewClickListener;
     private RvEmptyViewClickListener rvEmptyViewClickListener;
+    private RvItemCViewClickListener rvItemCViewClickListener;
+    private RvItemLongCViewClickListener rvItemLongCViewClickListener;
     private LayoutManager layoutManager;
 
     public ZRecyclerView(@NonNull Context context) {
@@ -122,6 +124,22 @@ public class ZRecyclerView extends RecyclerView {
         this.rvEmptyViewClickListener = rvEmptyViewClickListener;
         if (rvAdapter != null)
             rvAdapter.setRvEmptyViewClickListener(rvEmptyViewClickListener);
+        return this;
+    }
+
+    // 监听单项点击事件
+    public ZRecyclerView setRvItemCViewClickListener(RvItemCViewClickListener rvItemCViewClickListener) {
+        this.rvItemCViewClickListener = rvItemCViewClickListener;
+        if (rvAdapter != null)
+            rvAdapter.setRvItemCViewClickListener(rvItemCViewClickListener);
+        return this;
+    }
+
+    // 监听单项长按事件
+    public ZRecyclerView setRvItemLongCViewClickListener(RvItemLongCViewClickListener rvItemLongCViewClickListener) {
+        this.rvItemLongCViewClickListener = rvItemLongCViewClickListener;
+        if (rvAdapter != null)
+            rvAdapter.setRvItemLongCViewClickListener(rvItemLongCViewClickListener);
         return this;
     }
 
@@ -224,6 +242,10 @@ public class ZRecyclerView extends RecyclerView {
             rvAdapter.setRvItemLongClickListener(rvItemLongClickListener);
         if (rvEmptyViewClickListener != null)
             rvAdapter.setRvEmptyViewClickListener(rvEmptyViewClickListener);
+        if (rvItemCViewClickListener != null)
+            rvAdapter.setRvItemCViewClickListener(rvItemCViewClickListener);
+        if (rvItemLongCViewClickListener != null)
+            rvAdapter.setRvItemLongCViewClickListener(rvItemLongCViewClickListener);
         rvAdapter.attachRecyclerView(this);
         super.setAdapter(adapter);
         return this;

@@ -1,7 +1,6 @@
 package cc.ibooker.zrecyclerviewlib;
 
 import android.support.annotation.NonNull;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
@@ -24,6 +23,8 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     private RvItemLongClickListener rvItemLongClickListener;
     private RvHeadViewClickListener rvHeadViewClickListener;
     private RvEmptyViewClickListener rvEmptyViewClickListener;
+    private RvItemCViewClickListener rvItemCViewClickListener;
+    private RvItemLongCViewClickListener rvItemLongCViewClickListener;
     public final int TYPE_FOOTER = Integer.MIN_VALUE;
     public final int TYPE_EMPTY = TYPE_FOOTER + 1;
     public final int TYPE_HEARD = TYPE_EMPTY + 1;
@@ -67,18 +68,6 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
                             rvItemClickListener.onRvItemClick(v, position, getRealListPosition(position));
                     break;
             }
-
-//            // 执行点击事件
-//            if (position == 0 && rvHeadView != null) {
-//                if (rvHeadViewClickListener != null)
-//                    rvHeadViewClickListener.onRvHeadViewClick(v);
-//            } else if (position == itemCount - 1 && rvFooterView != null) {
-//                if (rvFooterViewClickListener != null)
-//                    rvFooterViewClickListener.onRvFooterViewClick(v);
-//            } else if (position >= 0 && position < itemCount) {
-//                if (rvItemClickListener != null)
-//                    rvItemClickListener.onRvItemClick(v, position, getRealListPosition(position));
-//            }
         }
     }
 
@@ -95,28 +84,45 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     }
 
     // 设置单项点击监听
-    public synchronized void setRvItemClickListener(RvItemClickListener rvItemClickListener) {
+    public synchronized BaseRvAdapter setRvItemClickListener(RvItemClickListener rvItemClickListener) {
         this.rvItemClickListener = rvItemClickListener;
+        return this;
     }
 
     // 设置头部点击监听
-    public synchronized void setRvHeadViewClickListener(RvHeadViewClickListener rvHeadViewClickListener) {
+    public synchronized BaseRvAdapter setRvHeadViewClickListener(RvHeadViewClickListener rvHeadViewClickListener) {
         this.rvHeadViewClickListener = rvHeadViewClickListener;
+        return this;
     }
 
     // 设置底部点击监听
-    public synchronized void setRvFooterViewClickListener(RvFooterViewClickListener rvFooterViewClickListener) {
+    public synchronized BaseRvAdapter setRvFooterViewClickListener(RvFooterViewClickListener rvFooterViewClickListener) {
         this.rvFooterViewClickListener = rvFooterViewClickListener;
+        return this;
     }
 
     // 设置空页面点击监听
-    public synchronized void setRvEmptyViewClickListener(RvEmptyViewClickListener rvEmptyViewClickListener) {
+    public synchronized BaseRvAdapter setRvEmptyViewClickListener(RvEmptyViewClickListener rvEmptyViewClickListener) {
         this.rvEmptyViewClickListener = rvEmptyViewClickListener;
+        return this;
     }
 
     // 设置单项长按监听
-    public synchronized void setRvItemLongClickListener(RvItemLongClickListener rvItemLongClickListener) {
+    public synchronized BaseRvAdapter setRvItemLongClickListener(RvItemLongClickListener rvItemLongClickListener) {
         this.rvItemLongClickListener = rvItemLongClickListener;
+        return this;
+    }
+
+    // 监听单项点击事件
+    public synchronized BaseRvAdapter setRvItemCViewClickListener(RvItemCViewClickListener rvItemCViewClickListener) {
+        this.rvItemCViewClickListener = rvItemCViewClickListener;
+        return this;
+    }
+
+    // 监听单项长按事件
+    public synchronized BaseRvAdapter setRvItemLongCViewClickListener(RvItemLongCViewClickListener rvItemLongCViewClickListener) {
+        this.rvItemLongCViewClickListener = rvItemLongCViewClickListener;
+        return this;
     }
 
     public BaseRvAdapter() {
@@ -326,9 +332,28 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
             return new BaseViewHolder(rvHeadView.getHeadView());
         } else {
             BaseViewHolder baseViewHolder = onCreateItemViewHolder(viewGroup, viewType);
-            if (baseViewHolder.getItemView() != null) {
-                baseViewHolder.getItemView().setOnClickListener(this);
-                baseViewHolder.getItemView().setOnLongClickListener(this);
+            viewGroup.setOnClickListener(this);
+            viewGroup.setOnLongClickListener(this);
+            final int position = zRecyclerView.getChildAdapterPosition(viewGroup);
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                final View view = viewGroup.getChildAt(i);
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (rvItemCViewClickListener != null)
+                            rvItemCViewClickListener.onRvItemCViewClick(view, position, getRealListPosition(position));
+                    }
+                });
+                view.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        if (rvItemLongCViewClickListener != null) {
+                            rvItemLongCViewClickListener.onRvItemCViewLongClick(view, position, getRealListPosition(position));
+                            return true;
+                        }
+                        return false;
+                    }
+                });
             }
             return baseViewHolder;
         }
