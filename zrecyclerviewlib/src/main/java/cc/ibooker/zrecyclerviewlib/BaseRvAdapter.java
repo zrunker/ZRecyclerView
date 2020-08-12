@@ -334,6 +334,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
             BaseViewHolder baseViewHolder = onCreateItemViewHolder(viewGroup, viewType);
             viewGroup.setOnClickListener(this);
             viewGroup.setOnLongClickListener(this);
+            // 监听子View操作事件
             final int position = zRecyclerView.getChildAdapterPosition(viewGroup);
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 final View view = viewGroup.getChildAt(i);
