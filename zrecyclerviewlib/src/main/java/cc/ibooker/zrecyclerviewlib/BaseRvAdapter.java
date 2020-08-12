@@ -319,17 +319,20 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     @Override
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         if (viewType == TYPE_FOOTER) {
-            if (rvFooterView.getFooterView() != null)
-                rvFooterView.getFooterView().setOnClickListener(this);
-            return new BaseViewHolder<>(rvFooterView.getFooterView());
+            View footerView = rvFooterView.getFooterView();
+            if (footerView != null && rvFooterViewClickListener != null)
+                footerView.setOnClickListener(this);
+            return new BaseViewHolder<>(footerView);
         } else if (viewType == TYPE_EMPTY) {
-            if (rvEmptyView.getEmptyView() != null)
-                rvEmptyView.getEmptyView().setOnClickListener(this);
-            return new BaseViewHolder(rvEmptyView.getEmptyView());
+            View emptyView = rvEmptyView.getEmptyView();
+            if (emptyView != null && rvEmptyViewClickListener != null)
+                emptyView.setOnClickListener(this);
+            return new BaseViewHolder(emptyView);
         } else if (viewType == TYPE_HEARD) {
-            if (rvHeadView.getHeadView() != null)
-                rvHeadView.getHeadView().setOnClickListener(this);
-            return new BaseViewHolder(rvHeadView.getHeadView());
+            View headerView = rvHeadView.getHeadView();
+            if (headerView != null && rvHeadViewClickListener != null)
+                headerView.setOnClickListener(this);
+            return new BaseViewHolder(headerView);
         } else {
             BaseViewHolder baseViewHolder = onCreateItemViewHolder(viewGroup, viewType);
             final View itemView = baseViewHolder.getItemView();
