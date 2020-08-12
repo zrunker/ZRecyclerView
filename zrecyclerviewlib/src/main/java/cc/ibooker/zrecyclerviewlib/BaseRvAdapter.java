@@ -35,6 +35,42 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     private BaseRvHeadView rvHeadView;// 头部View
     private ZRecyclerView zRecyclerView;
 
+    public RvItemClickListener getRvItemClickListener() {
+        return rvItemClickListener;
+    }
+
+    public RvFooterViewClickListener getRvFooterViewClickListener() {
+        return rvFooterViewClickListener;
+    }
+
+    public RvItemLongClickListener getRvItemLongClickListener() {
+        return rvItemLongClickListener;
+    }
+
+    public RvHeadViewClickListener getRvHeadViewClickListener() {
+        return rvHeadViewClickListener;
+    }
+
+    public RvEmptyViewClickListener getRvEmptyViewClickListener() {
+        return rvEmptyViewClickListener;
+    }
+
+    public RvItemCViewClickListener getRvItemCViewClickListener() {
+        return rvItemCViewClickListener;
+    }
+
+    public RvItemLongCViewClickListener getRvItemLongCViewClickListener() {
+        return rvItemLongCViewClickListener;
+    }
+
+    public RvItemDiyCViewClickListener getRvItemDiyCViewClickListener() {
+        return rvItemDiyCViewClickListener;
+    }
+
+    public RvItemDiyLongCViewClickListener getRvItemDiyLongCViewClickListener() {
+        return rvItemDiyLongCViewClickListener;
+    }
+
     // 设置ZRecyclerView
     synchronized void attachRecyclerView(ZRecyclerView zRecyclerView) {
         this.zRecyclerView = zRecyclerView;
