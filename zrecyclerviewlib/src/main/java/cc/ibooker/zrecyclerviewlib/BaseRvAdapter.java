@@ -453,8 +453,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     // 获取View中所有子控件并设置点击事件
     private void setItemCViewsClick(View view, @NonNull View parentView) {
         if (view != null) {
-            if (rvItemClickListener == null || view != parentView)
-                setViewClick(view, parentView);
+            setViewClick(view, parentView);
             if (view instanceof ViewGroup) {
                 ViewGroup viewGroup = (ViewGroup) view;
                 for (int i = 0; i < viewGroup.getChildCount(); i++) {
@@ -466,25 +465,27 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
 
     // 设置View点击事件
     private void setViewClick(@NonNull final View view, @NonNull final View parentView) {
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (rvItemCViewClickListener != null && zRecyclerView != null) {
-                    int position = zRecyclerView.getChildAdapterPosition(parentView);
-                    rvItemCViewClickListener.onRvItemCViewClick(view, position, getRealListPosition(position));
+        if (rvItemClickListener == null || view != parentView)
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (rvItemCViewClickListener != null && zRecyclerView != null) {
+                        int position = zRecyclerView.getChildAdapterPosition(parentView);
+                        rvItemCViewClickListener.onRvItemCViewClick(view, position, getRealListPosition(position));
+                    }
                 }
-            }
-        });
-        view.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (rvItemLongCViewClickListener != null && zRecyclerView != null) {
-                    int position = zRecyclerView.getChildAdapterPosition(parentView);
-                    rvItemLongCViewClickListener.onRvItemCViewLongClick(view, position, getRealListPosition(position));
-                    return true;
+            });
+        if (rvItemLongClickListener == null || view != parentView)
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (rvItemLongCViewClickListener != null && zRecyclerView != null) {
+                        int position = zRecyclerView.getChildAdapterPosition(parentView);
+                        rvItemLongCViewClickListener.onRvItemCViewLongClick(view, position, getRealListPosition(position));
+                        return true;
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
     }
 }
