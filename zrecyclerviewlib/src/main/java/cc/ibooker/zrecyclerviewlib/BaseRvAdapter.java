@@ -332,25 +332,27 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
             return new BaseViewHolder(rvHeadView.getHeadView());
         } else {
             BaseViewHolder baseViewHolder = onCreateItemViewHolder(viewGroup, viewType);
-            View itemView = baseViewHolder.getItemView();
+            final View itemView = baseViewHolder.getItemView();
             if (itemView != null) {
                 itemView.setOnClickListener(this);
                 itemView.setOnLongClickListener(this);
                 // 监听子View操作事件
-                final int position = zRecyclerView.getChildAdapterPosition(itemView);
                 for (int i = 0; i < viewGroup.getChildCount(); i++) {
                     final View view = viewGroup.getChildAt(i);
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if (rvItemCViewClickListener != null)
+                            if (rvItemCViewClickListener != null && zRecyclerView != null) {
+                                int position = zRecyclerView.getChildAdapterPosition(itemView);
                                 rvItemCViewClickListener.onRvItemCViewClick(view, position, getRealListPosition(position));
+                            }
                         }
                     });
                     view.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
-                            if (rvItemLongCViewClickListener != null) {
+                            if (rvItemLongCViewClickListener != null && zRecyclerView != null) {
+                                int position = zRecyclerView.getChildAdapterPosition(itemView);
                                 rvItemLongCViewClickListener.onRvItemCViewLongClick(view, position, getRealListPosition(position));
                                 return true;
                             }
