@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -17,7 +16,7 @@ import java.util.List;
  */
 public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHolder>
         implements View.OnClickListener, View.OnLongClickListener {
-    private List<T> mList = Collections.synchronizedList(new ArrayList<T>());
+    private volatile List<T> mList = new ArrayList<>();
     private RvItemClickListener rvItemClickListener;
     private RvFooterViewClickListener rvFooterViewClickListener;
     private RvItemLongClickListener rvItemLongClickListener;
