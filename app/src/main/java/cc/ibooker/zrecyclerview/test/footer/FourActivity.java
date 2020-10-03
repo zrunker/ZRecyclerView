@@ -3,6 +3,7 @@ package cc.ibooker.zrecyclerview.test.footer;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +17,7 @@ import cc.ibooker.zrecyclerview.test.ThreeBean;
 import cc.ibooker.zrecyclerview.test.ThreeRvAdapter;
 import cc.ibooker.zrecyclerviewlib.RvFooterViewClickListener;
 import cc.ibooker.zrecyclerviewlib.RvHeadViewClickListener;
+import cc.ibooker.zrecyclerviewlib.RvItemCViewClickListener;
 import cc.ibooker.zrecyclerviewlib.RvItemClickListener;
 import cc.ibooker.zrecyclerviewlib.RvItemLongClickListener;
 import cc.ibooker.zrecyclerviewlib.RvScrollListener;
@@ -60,20 +62,25 @@ public class FourActivity extends Activity implements SwipeRefreshLayout.OnRefre
         zRecyclerView.addFooterView(new RvFooterView(this, footerData));
         zRecyclerView.setRvFooterViewClickListener(new RvFooterViewClickListener() {
             @Override
-            public void onRvFooterViewClick(View view) {
+            public void onRvFooterViewClick(@NonNull View view) {
                 Toast.makeText(FourActivity.this, "点击底部", Toast.LENGTH_SHORT).show();
             }
         });
 
         zRecyclerView.setRvItemClickListener(new RvItemClickListener() {
             @Override
-            public void onRvItemClick(View view, int position, int realPosition) {
+            public void onRvItemClick(@NonNull View view, int position, int realPosition) {
                 Toast.makeText(FourActivity.this, "点击position：" + position + " 点击数据列表position：" + realPosition, Toast.LENGTH_SHORT).show();
             }
         }).setRvItemLongClickListener(new RvItemLongClickListener() {
             @Override
-            public void onRvItemLongClick(View view, int position, int realPosition) {
+            public void onRvItemLongClick(@NonNull View view, int position, int realPosition) {
                 Toast.makeText(FourActivity.this, "长按position：" + position + " 点击数据列表position：" + realPosition, Toast.LENGTH_SHORT).show();
+            }
+        }).setRvItemCViewClickListener(new RvItemCViewClickListener() {
+            @Override
+            public void onRvItemCViewClick(@NonNull View view, int position, int realPosition) {
+                Toast.makeText(FourActivity.this, "点击" + view.getId(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -81,7 +88,7 @@ public class FourActivity extends Activity implements SwipeRefreshLayout.OnRefre
         zRecyclerView.addHeadView(new RvHeadView(this, headData));
         zRecyclerView.setRvHeadViewClickListener(new RvHeadViewClickListener() {
             @Override
-            public void onRvHeadViewClick(View view) {
+            public void onRvHeadViewClick(@NonNull View view) {
                 Toast.makeText(FourActivity.this, "点击头部", Toast.LENGTH_SHORT).show();
             }
         });
