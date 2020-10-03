@@ -432,12 +432,12 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
 
     @Override
     public int getItemViewType(int position) {
-        if ((mList == null || mList.size() <= 0) && rvEmptyView != null)// 显示空页面
-            return TYPE_EMPTY;
         if (position == 0 && rvHeadView != null)// 显示头部
             return TYPE_HEARD;
         if (mList != null && position >= getItemCount() - 1 && rvFooterView != null)// 显示底部
             return TYPE_FOOTER;
+        if ((mList == null || mList.size() <= 0) && rvEmptyView != null)// 显示空页面
+            return TYPE_EMPTY;
         return getViewType(getRealListPosition(position));
     }
 
