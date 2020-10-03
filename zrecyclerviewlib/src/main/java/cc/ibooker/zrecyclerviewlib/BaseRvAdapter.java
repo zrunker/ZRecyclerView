@@ -1,7 +1,6 @@
 package cc.ibooker.zrecyclerviewlib;
 
 import android.support.annotation.NonNull;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
@@ -349,8 +348,6 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
 
     @Override
     public int getItemCount() {
-        if ((mList == null || mList.size() <= 0) && rvEmptyView != null)// 空页面
-            return 1;
         int total = 0;
         if (mList != null)
             total = total + mList.size();
@@ -358,6 +355,9 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
             total = total + 1;
         if (mList != null && mList.size() > 0 && rvFooterView != null)// 添加底部
             total = total + 1;
+        if (total <= 0)
+            if ((mList == null || mList.size() <= 0) && rvEmptyView != null)// 空页面
+                return 1;
         return total;
     }
 
